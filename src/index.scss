@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+// global css variables
+:root {
+  --prim-bg-clr: #111;
+  --prim-font-clr: #E4E5E67A;
+}
+
+// font imports
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/fonts/Inter-Regular.woff') format('woff');
+}

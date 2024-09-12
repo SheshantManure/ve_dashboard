@@ -1,0 +1,144 @@
+.backdropContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(8px);
+    z-index: 2;
+
+    .container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 400px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .contentDiv {
+            width: calc(100% - 28px);
+            height: calc(100% - 28px);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(100, 100, 100, 0.16);
+            background: rgba(18, 19, 21, 0.74);
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+                -2px -4px 16px 0px rgba(96, 85, 236, 0.06);
+
+            .closeBtnContainer {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+
+                .closeBtn {
+                    padding: 4px;
+                    cursor: pointer;
+                }
+            }
+
+            .logoContainer {
+                margin-top: 36px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                gap: 16px;
+
+                p {
+                    color: #e4e5e6;
+                    text-align: center;
+                    font-family: Inter;
+                    font-size: 15px;
+                    font-style: normal;
+                    font-weight: 400;
+                }
+            }
+
+            button.googleContainer {
+                margin-top: 36px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                border: 1px solid white;
+                padding: 12px 0;
+                border-radius: 100px;
+                border: 1px solid rgba(100, 100, 100, 0.16);
+                background: #202124;
+                cursor: pointer;
+
+                p {
+                    color: #707070;
+                    font-family: Inter;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 500;
+                }
+            }
+
+            p.or {
+                color: #555;
+                font-family: Inter;
+                font-size: 11px;
+                font-style: normal;
+                font-weight: 500;
+                padding: 16px 0;
+                text-align: center;
+            }
+
+            .email {
+                width: 100%;
+                padding: 12px 24px;
+                border-radius: 100px;
+                border: 1px solid rgba(100, 100, 100, 0.16);
+
+                input {
+                    background-color: inherit;
+                    color: #707070;
+                    outline: none;
+                    border: none;
+                }
+            }
+
+            button.continueWithEmail {
+                padding: 16px 0;
+                margin-top: 16px;
+                width: 100%;
+                border-radius: 100px;
+                border: 1px solid rgba(100, 100, 100, 0.16);
+                background: #202124;
+                cursor: pointer;
+
+                p {
+                    color: #707070;
+                    font-family: Inter;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        p.login {
+            position: absolute;
+            bottom: 38px;
+            color: #707070;
+            font-family: Inter;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+
+            span {
+                color: #6055ec;
+                font-family: Inter;
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 500;
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -1,22 +1,24 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
-  width: 100%;
+html,
+body {
+    height: 100%;
+    width: 100%;
+    background-color: var(--prim-bg-clr);
 }
 
 // global css variables
 :root {
-  --prim-bg-clr: #111;
-  --prim-font-clr: #E4E5E67A;
+    --prim-bg-clr: #111;
+    --prim-font-clr: #e4e5e67a;
 }
 
 // font imports
 @font-face {
-  font-family: 'Inter';
-  src: url('./assets/fonts/Inter-Regular.woff') format('woff');
+    font-family: "Inter";
+    src: url("./assets/fonts/Inter-Regular.woff") format("woff");
 }

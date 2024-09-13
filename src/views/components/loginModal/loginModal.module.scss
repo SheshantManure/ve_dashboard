@@ -12,10 +12,227 @@
 
     .modalContainer {
         width: 662px;
-        height: 465px;
+        height: 462px;
+        padding: 48px 112px;
         border-radius: 32px;
         border: 1px solid #646464;
         background: rgba(18, 19, 21, 0.64);
         box-shadow: 2px 4px 40px 0px rgba(119, 112, 210, 0.12);
+        position: relative;
+
+        h1.loginTitle {
+            color: #e4e5e6;
+            text-align: center;
+            font-family: Inter;
+            font-size: 28px;
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        p {
+            margin-top: 8px;
+            color: #e4e5e6;
+            text-align: center;
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        .continueWithGoogleDiv {
+            width: 424px;
+            margin-top: 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-radius: 100px;
+            border: 1px solid rgba(100, 100, 100, 0.16);
+            background-color: #202124;
+            cursor: pointer;
+
+            .userInfo {
+                display: flex;
+                gap: 8px;
+
+                .nameAndEmail {
+                    h1 {
+                        color: #e4e5e6;
+                        font-family: Inter;
+                        font-size: 13px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: 18px;
+                    }
+                    h2 {
+                        color: #e4e5e6;
+                        font-family: Inter;
+                        font-size: 11px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 14px;
+                    }
+                }
+            }
+
+            .GoogleLogoDiv {
+                background-color: white;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 100px;
+            }
+        }
+
+        p.or {
+            color: #555;
+            font-family: Inter;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 24px;
+        }
+
+        .emailDiv {
+            width: 424px;
+            margin-top: 8px;
+            input {
+                padding: 12px 24px;
+                width: 100%;
+                border-radius: 100px;
+                border: 1px solid rgba(100, 100, 100, 0.16);
+                background-color: inherit;
+                outline: none;
+                color: white;
+            }
+
+            &:-webkit-autofill {
+                background-color: red !important;
+            }
+        }
+
+        .pwdDiv {
+            width: 424px;
+            margin-top: 12px;
+            position: relative;
+
+            svg {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 20px;
+                cursor: pointer;
+            }
+
+            input {
+                padding: 12px 24px;
+                width: 100%;
+                border-radius: 100px;
+                border: 1px solid rgba(100, 100, 100, 0.16);
+                background-color: inherit;
+                outline: none;
+                color: white;
+            }
+        }
+
+        .actionBtns {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            position: relative;
+
+            .backBtn {
+                border-radius: 100px;
+                border: 1px solid rgba(100, 100, 100, 0.16);
+                color: rgba(228, 229, 230, 0.48);
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 20px;
+                padding: 12px 24px;
+                background-color: inherit;
+                cursor: pointer;
+            }
+
+            .continueBtn {
+                padding: 12px 24px;
+                width: 424px;
+                border-radius: 100px;
+                background: #fff;
+                cursor: pointer;
+                border: none;
+            }
+
+            .errMsg {
+                color: rgba(255, 62, 62, 0.48);
+                font-family: Inter;
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 20px;
+                position: absolute;
+                bottom: -28px;
+                right: 22px;
+            }
+        }
+
+        p.forgotPwd {
+            position: absolute;
+            bottom: 52px;
+            width: fit-content;
+            color: #6055ec;
+            text-align: center;
+            font-family: Inter;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 16px;
+            cursor: pointer;
+        }
+
+        .codeDiv {
+            width: 424px;
+            margin-top: 36px;
+            display: flex;
+            justify-content: center;
+            input {
+                padding: 12px 24px;
+                // width: 100%;
+                border-radius: 100px;
+                border: 1px solid rgba(100, 100, 100, 0.16);
+                background-color: inherit;
+                outline: none;
+                color: white;
+            }
+            input[type="text"]::-webkit-outer-spin-button,
+            input[type="text"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+            input[type="text"]::placeholder {
+                text-align: center; // Center the placeholder text
+            }
+
+            input[type="text"] {
+                text-align: left; // Center the actual input text as well
+            }
+        }
+
+        .resendCodeContainer {
+            display: flex;
+            justify-content: center;
+            p.resendCode {
+                color: rgba(228, 229, 230, 0.48);
+                font-family: Inter;
+                font-size: 11px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 24px;
+                cursor: pointer;
+                width: fit-content;
+            }
+        }
     }
 }

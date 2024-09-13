@@ -1,13 +1,9 @@
 .container {
-    width: calc(100% - 400px);
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    left: 50%;
     background-color: inherit;
     z-index: 1;
-    transform: translateX(-50%);
 
     nav {
         display: flex;

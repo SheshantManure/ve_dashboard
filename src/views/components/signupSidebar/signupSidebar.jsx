@@ -4,7 +4,11 @@ import CloseSignupSidebarBtn from "./closeSignupSidebarBtn";
 import VeLogo from "../VeLogo/VeLogo";
 import GoogleLogo from "../../../assets/svgs/signupSidebar/googleLogo";
 
-const SignupSidebar = ({ closeSignupSidebar }) => {
+const SignupSidebar = ({ openLoginModal, closeSignupSidebar }) => {
+    const handleOpenLoginModal = () => {
+        closeSignupSidebar();
+        openLoginModal();
+    };
     return (
         <div onClick={closeSignupSidebar} className={style.backdropContainer}>
             <div
@@ -37,7 +41,8 @@ const SignupSidebar = ({ closeSignupSidebar }) => {
                     </button>
                 </div>
                 <p className={style.login}>
-                    Already have an account? <span>Login</span>
+                    Already have an account?{" "}
+                    <span onClick={handleOpenLoginModal}>Login</span>
                 </p>
             </div>
         </div>

@@ -1,18 +1,59 @@
+@media (max-width: 500px) {
+    .container {
+        overflow-x: hidden;
+    }
+}
+
 .container {
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     background-color: var(--prim-bg-clr);
     position: relative;
     padding: 0 200px;
+
+    @media (max-width: 500px) {
+        .veLogoStyles {
+            left: 0 !important;
+            top: 0 !important;
+            width: 100vw;
+            height: 56px;
+
+            &:hover {
+                animation: none !important;
+            }
+
+            svg {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 32px;
+            }
+        }
+    }
 
     .veLogoStyles {
         position: fixed;
         top: 36px;
         left: 48px;
-        cursor: pointer;
+        background-color: inherit;
+        z-index: 3;
+
+        svg {
+            cursor: pointer;
+        }
 
         &:hover {
             animation: rotateAnimation 2s infinite;
+        }
+    }
+
+    .hamburger {
+        position: absolute;
+        top: 28px;
+        right: 80px;
+
+        svg {
+            cursor: pointer;
         }
     }
 
@@ -34,198 +75,314 @@
         }
     }
 
-    .title {
-        padding: 120px 0 60px;
-
-        h1 {
-            color: #e4e5e6;
-            font-family: Inter;
-            font-size: 40px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: 42px;
-        }
-
-        h2 {
-            margin-top: 20px;
-            font-family: Inter;
-            font-size: 30px;
-            font-style: normal;
-            font-weight: 500;
-            background: linear-gradient(90deg, #98c1ffe5, #813fece5, #ff6ea2e5);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            width: fit-content;
-        }
-
-        h3 {
-            margin-top: 8px;
-            color: rgba(228, 229, 230, 0.48);
-            font-family: Inter;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 24px;
-        }
-    }
-
-    h4.gettingStarted {
-        width: fit-content;
-        color: #e4e5e6;
-        font-family: Inter;
-        font-size: 12px;
-        font-style: normal;
-        font-weight: 400;
-    }
-
-    .cardsContainer {
-        position: relative;
-        margin-top: 16px;
-        width: 100%;
-        max-width: 1240px; // 1440px - 200px of padding
-        display: flex;
-        justify-content: flex-start;
-        gap: 18px;
-
-        .card {
-            border: 0.5px solid white;
-            padding: 16px;
-            width: 25%;
-            aspect-ratio: 245 / 166;
-            min-width: 245px;
-            // min-height: 166px;
-            border-radius: 16px;
-            border: 0.5px solid rgba(100, 100, 100, 0.16);
-            background: #121315;
-
-            p.description {
-                color: rgba(228, 229, 230, 0.48);
-                font-family: Inter;
-                font-size: 12px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: 16px;
-            }
-
-            nav {
-                position: absolute;
-                bottom: 16px;
-                display: flex;
-
-                h3 {
-                    color: #fff;
-                    text-align: center;
-                    font-family: Inter;
-                    font-size: 13px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 18px;
-                    margin-left: 6px;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-
-    .refreshPrompts {
-        margin-top: 16px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 8px;
-
-        h4 {
-            color: rgba(228, 229, 230, 0.48);
-            font-family: Inter;
-            font-size: 12px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 16px;
-            cursor: pointer;
-        }
-    }
-
-    .promptContainer {
-        margin-top: 112px;
-        width: 100%;
+    .mainContent {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        gap: 12px;
-        .box550px {
-            width: 550px;
+        justify-content: center;
+        height: calc(100% - 90px);
 
-            p.heading {
-                color: rgba(228, 229, 230, 0.48);
+        .mainBox {
+            width: fit-content;
+            height: 100%;
+            position: relative;
+
+            @media (max-width: 500px) {
+                .title {
+                    padding: 0 48px;
+                    width: 100%;
+                    h1 {
+                        text-align: center;
+                        margin-top: 50px !important;
+                        font-size: 22px !important;
+                        svg {
+                            padding-top: 8px;
+                            width: 24px !important;
+                        }
+                    }
+
+                    h2 {
+                        width: 100% !important;
+                        padding: 0 24px !important;
+                        text-align: center !important;
+                    }
+
+                    h3 {
+                        font-size: 12px !important;
+                        text-align: center;
+                        width: 100%;
+                        font-size: 12px;
+                    }
+                }
+
+                h4.gettingStarted {
+                    width: 100vw;
+                    padding: 0 48px;
+                    color: #e4e5e6;
+                    text-align: center !important;
+                    margin-left: 9px !important;
+                    // margin-top: 4px !important;
+                    font-family: Inter;
+                    font-size: 10px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 14px;
+                    text-align: center;
+                }
+            }
+
+            .title {
+                h1 {
+                    margin: 48px 0 16px;
+                    color: #e4e5e6;
+                    font-family: Inter;
+                    font-size: 40px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: 42px;
+                }
+
+                h2 {
+                    margin-top: 20px;
+                    font-family: Inter;
+                    font-size: 30px;
+                    font-style: normal;
+                    font-weight: 500;
+                    background: linear-gradient(
+                        90deg,
+                        #98c1ffe5,
+                        #813fece5,
+                        #ff6ea2e5
+                    );
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    color: transparent;
+                    width: fit-content;
+                }
+
+                h3 {
+                    margin-top: 8px;
+                    color: rgba(228, 229, 230, 0.48);
+                    font-family: Inter;
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 24px;
+                }
+            }
+
+            h4.gettingStarted {
+                color: #e4e5e6;
+                text-align: left;
                 font-family: Inter;
                 font-size: 12px;
                 font-style: normal;
                 font-weight: 400;
-                line-height: 14px;
-                width: fit-content;
+                margin: 48px 0 16px;
             }
 
-            .promptInputDiv {
-                margin-top: 12px;
-                padding: 16px;
-                border-radius: 13.997px;
-                border: 1px solid rgba(100, 100, 100, 0.16);
-                background: #191b1e;
-                box-shadow: 0px -15.996px 99.975px 0px rgba(96, 85, 236, 0.12);
-                height: 104px;
+            @media (max-width: 500px) {
+                .cardsContainer {
+                    margin-left: 4px !important;
+                    width: 100vw !important;
+                    padding: 0 28px !important;
+                    display: grid !important;
+                    grid-template-columns: repeat(2, 1fr) !important;
+                    grid-template-rows: auto !important;
+                    gap: 8px !important;
+                    justify-content: center !important;
+                }
 
-                .promptTextArea {
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    gap: 8px;
+                .card {
+                    width: 100% !important;
+                    max-width: none !important;
+                    aspect-ratio: 245 / 166 !important;
+                }
+            }
 
-                    textarea {
-                        width: 100%;
-                        height: 48px;
-                        background-color: inherit;
+            .cardsContainer {
+                margin-top: 16px;
+                width: 100%;
+                max-width: 1240px; // 1440px - 200px of padding
+                display: flex;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                gap: 18px;
+
+                .card {
+                    position: relative;
+                    padding: 16px;
+                    width: 25%;
+                    max-width: 245px;
+                    min-width: 195px;
+                    aspect-ratio: 245 / 166;
+                    border-radius: 16px;
+                    border: 0.5px solid rgba(100, 100, 100, 0.16);
+                    background: #121315;
+
+                    p.description {
                         color: rgba(228, 229, 230, 0.48);
-                        border: none;
-                        outline: none;
-                        resize: none;
-                        line-height: 20px;
+                        font-family: Inter;
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 16px;
                     }
-                }
 
-                .promptActions {
-                    width: 100%;
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    gap: 16px;
+                    nav {
+                        position: absolute;
+                        bottom: 16px;
+                        display: flex;
 
-                    svg {
-                        cursor: pointer;
+                        h3 {
+                            color: #fff;
+                            text-align: center;
+                            font-family: Inter;
+                            font-size: 13px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: 18px;
+                            margin-left: 6px;
+                            cursor: pointer;
+                        }
                     }
                 }
             }
 
-            p.tagLine {
-                margin: 16px auto 20px;
-                text-align: center;
-                font-family: Inter;
-                font-size: 10px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: 14px;
-                background: linear-gradient(
-                    90deg,
-                    #98c1ffe5,
-                    #813fece5,
-                    #ff6ea2e5
-                );
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                width: fit-content;
+            // .refreshPrompts {
+            //     border: 1px solid white;
+            //     margin-top: 16px;
+            //     display: flex;
+            //     justify-content: flex-start;
+            //     align-items: center;
+            //     gap: 8px;
+
+            //     h4 {
+            //         color: rgba(228, 229, 230, 0.48);
+            //         font-family: Inter;
+            //         font-size: 12px;
+            //         font-style: normal;
+            //         font-weight: 400;
+            //         line-height: 16px;
+            //         cursor: pointer;
+            //     }
+            // }
+
+            @media (max-width: 500px) {
+                .promptContainer {
+                    width: 100vw !important;
+                    position: static !important;
+                    margin-top: 36px !important;
+                    margin-left: 4px !important;
+                    padding: 0 24px !important;
+
+                    .box550px {
+                        width: 100% !important;
+                    }
+                }
             }
+
+            .promptContainer {
+                position: absolute;
+                bottom: 0px;
+                margin-top: 112px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 12px;
+
+                .box550px {
+                    width: 550px;
+
+                    p.heading {
+                        color: rgba(228, 229, 230, 0.48);
+                        font-family: Inter;
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 14px;
+                        width: fit-content;
+                    }
+
+                    .promptInputDiv {
+                        margin-top: 12px;
+                        padding: 16px;
+                        border-radius: 13.997px;
+                        border: 1px solid rgba(100, 100, 100, 0.16);
+                        background: #191b1e;
+                        box-shadow: 0px -15.996px 99.975px 0px rgba(96, 85, 236, 0.12);
+                        height: 104px;
+
+                        .promptTextArea {
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: flex-start;
+                            gap: 8px;
+
+                            textarea {
+                                width: 100%;
+                                height: 48px;
+                                background-color: inherit;
+                                color: rgba(228, 229, 230, 0.48);
+                                border: none;
+                                outline: none;
+                                resize: none;
+                                line-height: 20px;
+
+                                &::placeholder {
+                                    color: rgba(228, 229, 230, 0.48);
+                                    font-size: 12px;
+                                    font-style: normal;
+                                    font-weight: 500;
+                                    line-height: 18px;
+                                }
+                            }
+                        }
+
+                        .promptActions {
+                            width: 100%;
+                            display: flex;
+                            justify-content: flex-end;
+                            align-items: center;
+                            gap: 16px;
+
+                            svg {
+                                cursor: pointer;
+                            }
+                        }
+                    }
+
+                    p.tagLine {
+                        margin: 16px auto 20px;
+                        text-align: center;
+                        font-family: Inter;
+                        font-size: 10px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 14px;
+                        background: linear-gradient(
+                            90deg,
+                            #98c1ffe5,
+                            #813fece5,
+                            #ff6ea2e5
+                        );
+                        -webkit-background-clip: text;
+                        background-clip: text;
+                        color: transparent;
+                        width: fit-content;
+                    }
+                }
+            }
+
+            /* Apply absolute position only for screens with width >= 1440px */
+            // @media (min-width: 1440px) {
+            //     .promptContainer {
+            //         position: absolute;
+            //         bottom: 0px;
+            //     }
+            // }
         }
     }
 }

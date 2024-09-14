@@ -17,7 +17,7 @@
         border-radius: 32px;
         border: 1px solid #646464;
         background: rgba(18, 19, 21, 0.64);
-        box-shadow: 2px 4px 40px 0px rgba(119, 112, 210, 0.12);
+        box-shadow: 2px 4px 20px 0px rgba(119, 112, 210, 0.12);
         position: relative;
 
         h1.loginTitle {
@@ -115,15 +115,20 @@
 
         .pwdDiv {
             width: 424px;
-            margin-top: 12px;
+            margin-top: 8px;
             position: relative;
 
-            svg {
+            .eyeIconContainer {
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%);
                 right: 20px;
                 cursor: pointer;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
 
             input {
@@ -141,6 +146,7 @@
             display: flex;
             gap: 12px;
             margin-top: 12px;
+            max-width: 424px;
             position: relative;
 
             .backBtn {
@@ -150,7 +156,6 @@
                 font-size: 12px;
                 font-style: normal;
                 font-weight: 500;
-                line-height: 20px;
                 padding: 12px 24px;
                 background-color: inherit;
                 cursor: pointer;
@@ -158,10 +163,22 @@
 
             .continueBtn {
                 padding: 12px 24px;
-                width: 424px;
+                width: 100%;
                 border-radius: 100px;
+                border: 1px solid white;
                 background: #fff;
                 cursor: pointer;
+                border: none;
+            }
+
+            .continueBtnDisabled {
+                padding: 12px 24px;
+                width: 100%;
+                border-radius: 100px;
+                color: rgba(228, 229, 230, 0.48);
+                border: 1px solid #202124;
+                background: #202124;
+                cursor: default;
                 border: none;
             }
 
@@ -174,22 +191,32 @@
                 line-height: 20px;
                 position: absolute;
                 bottom: -28px;
-                right: 22px;
+                right: 4px;
             }
         }
 
         p.forgotPwd {
             position: absolute;
-            bottom: 52px;
+            bottom: 106px;
             width: fit-content;
             color: #6055ec;
             text-align: center;
             font-family: Inter;
             font-size: 12px;
             font-style: normal;
-            font-weight: 500;
+            // font-weight: 500;
             line-height: 16px;
             cursor: pointer;
+        }
+
+        .companyTnC {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 16px;
+            p {
+                font-size: 10px;
+            }
         }
 
         .codeDiv {

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import style from "./WelcomePage.module.scss";
 import Navbar from "../../components/Navbar/Navbar";
 import VeLogo from "../../components/VeLogo/VeLogo";
 import Cards from "./cards";
-// import RefreshLogo from "../../../assets/svgs/welcomePageLogos/refreshLogo";
+import RefreshLogo from "../../../assets/svgs/welcomePageLogos/refreshLogo";
 import StarLogo from "../../../assets/svgs/welcomePageLogos/starLogo";
 import MicrophoneLogo from "../../../assets/svgs/welcomePageLogos/microphoneLogo";
 import RightArrowLogo from "../../../assets/svgs/welcomePageLogos/rightArrowLogo";
@@ -18,14 +18,24 @@ const WelcomePage = () => {
         window.innerWidth >= 500
     );
 
+    const promptInputRef = useRef(null);
+
     // Function to handle window resize
     const handleResize = () => {
         setIsLargeScreen(window.innerWidth >= 500);
     };
 
+    const handleKeyDown = (e) => {
+        if (e.ctrlKey && e.key.toLowerCase() === "l") {
+            setloginModalToggle(true);
+        }
+    };
+
     useEffect(() => {
+        promptInputRef.current.focus();
         // Add event listener for window resize
         window.addEventListener("resize", handleResize);
+        window.addEventListener("keydown", handleKeyDown);
 
         // Remove event listener on component unmount
         return () => {
@@ -85,10 +95,10 @@ const WelcomePage = () => {
                         Let’s get started with any of these actions!
                     </h4>
                     <Cards />
-                    {/* <div className={style.refreshPrompts}>
+                    <div className={style.refreshPrompts}>
                         <RefreshLogo />
                         <h4>Refresh Prompts</h4>
-                    </div> */}
+                    </div>
                     <div className={style.promptContainer}>
                         <div className={style.box550px}>
                             <p className={style.heading}>
@@ -98,6 +108,7 @@ const WelcomePage = () => {
                                 <div className={style.promptTextArea}>
                                     <StarLogo />
                                     <textarea
+                                        ref={promptInputRef}
                                         name="prompt"
                                         placeholder="Hey, give me million dollar service business idea!"
                                     ></textarea>

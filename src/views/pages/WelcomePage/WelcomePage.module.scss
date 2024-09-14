@@ -133,19 +133,19 @@
 
             .title {
                 h1 {
-                    margin: 48px 0 16px;
+                    margin-top: 48px;
                     color: #e4e5e6;
                     font-family: Inter;
-                    font-size: 40px;
+                    font-size: 30px;
                     font-style: normal;
                     font-weight: 500;
                     line-height: 42px;
                 }
 
                 h2 {
-                    margin-top: 20px;
+                    margin-top: 8px;
                     font-family: Inter;
-                    font-size: 30px;
+                    font-size: 36px;
                     font-style: normal;
                     font-weight: 500;
                     background: linear-gradient(
@@ -218,7 +218,23 @@
                     aspect-ratio: 245 / 166;
                     border-radius: 16px;
                     border: 0.5px solid rgba(100, 100, 100, 0.16);
-                    background: #121315;
+                    background: linear-gradient(0deg, #121315, #121315);
+                    transition: all 0.6s ease-out;
+
+                    &:hover {
+                        background: linear-gradient(
+                            129deg,
+                            #121315 27.84%,
+                            #202328 131.68%
+                        );
+                    }
+
+                    svg.gradient {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        border-radius: 16px;
+                    }
 
                     p.description {
                         color: rgba(228, 229, 230, 0.48);
@@ -249,24 +265,35 @@
                 }
             }
 
-            // .refreshPrompts {
-            //     border: 1px solid white;
-            //     margin-top: 16px;
-            //     display: flex;
-            //     justify-content: flex-start;
-            //     align-items: center;
-            //     gap: 8px;
+            @media (max-width: 500px) {
+                .refreshPrompts {
+                    padding-left: 28px;
+                }
+            }
 
-            //     h4 {
-            //         color: rgba(228, 229, 230, 0.48);
-            //         font-family: Inter;
-            //         font-size: 12px;
-            //         font-style: normal;
-            //         font-weight: 400;
-            //         line-height: 16px;
-            //         cursor: pointer;
-            //     }
-            // }
+            .refreshPrompts {
+                margin-top: 16px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 8px;
+
+                h4 {
+                    color: rgba(228, 229, 230, 0.48);
+                    font-family: Inter;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 16px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        color: white;
+                        text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.8);
+                    }
+                }
+            }
 
             @media (max-width: 500px) {
                 .promptContainer {

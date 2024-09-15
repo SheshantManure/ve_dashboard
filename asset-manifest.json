@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/ve_dashboard/static/css/main.7b392e50.css",
+    "main.js": "/ve_dashboard/static/js/main.e795ad4a.js",
+    "static/js/453.650e1608.chunk.js": "/ve_dashboard/static/js/453.650e1608.chunk.js",
+    "static/media/Inter-Regular.woff": "/ve_dashboard/static/media/Inter-Regular.a252fc44cf11fd602874.woff",
+    "index.html": "/ve_dashboard/index.html",
+    "main.7b392e50.css.map": "/ve_dashboard/static/css/main.7b392e50.css.map",
+    "main.e795ad4a.js.map": "/ve_dashboard/static/js/main.e795ad4a.js.map",
+    "453.650e1608.chunk.js.map": "/ve_dashboard/static/js/453.650e1608.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7b392e50.css",
+    "static/js/main.e795ad4a.js"
+  ]
+}

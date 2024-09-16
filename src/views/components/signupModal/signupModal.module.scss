@@ -18,71 +18,48 @@
         border: 1px solid #646464;
         background: rgba(18, 19, 21, 0.64);
         box-shadow: 2px 4px 20px 0px rgba(119, 112, 210, 0.12);
+        user-select: none;
         position: relative;
 
-        h1.loginTitle {
-            color: #e4e5e6;
-            text-align: center;
-            font-family: Inter;
-            font-size: 28px;
-            font-style: normal;
-            font-weight: 500;
+        .veLogoContainer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            p {
+                margin-top: 8px;
+                color: #e4e5e6;
+                text-align: center;
+                font-family: Inter;
+                font-size: 15px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 22px;
+            }
         }
 
-        p {
-            margin-top: 8px;
-            color: #e4e5e6;
-            text-align: center;
-            font-family: Inter;
-            font-size: 16px;
-            font-style: normal;
-            font-weight: 400;
-        }
-
-        .continueWithGoogleDiv {
+        button.continueWithGoogleBtn {
             width: 424px;
             margin-top: 36px;
+            padding: 12px 24px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 8px;
+            gap: 8px;
             border-radius: 100px;
             border: 1px solid rgba(100, 100, 100, 0.16);
-            background-color: #202124;
+            background: white;
             cursor: pointer;
 
-            .userInfo {
-                display: flex;
-                gap: 8px;
-
-                .nameAndEmail {
-                    h1 {
-                        color: #e4e5e6;
-                        font-family: Inter;
-                        font-size: 13px;
-                        font-style: normal;
-                        font-weight: 500;
-                        line-height: 18px;
-                    }
-                    h2 {
-                        color: #e4e5e6;
-                        font-family: Inter;
-                        font-size: 11px;
-                        font-style: normal;
-                        font-weight: 400;
-                        line-height: 14px;
-                    }
-                }
-            }
-
-            .GoogleLogoDiv {
-                background-color: white;
-                width: 28px;
-                height: 28px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 100px;
+            p {
+                color: #202124;
+                font-family: Inter;
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 16px;
             }
         }
 
@@ -93,12 +70,14 @@
             font-style: normal;
             font-weight: 500;
             line-height: 24px;
-            user-select: none;
+            padding: 16px 0;
+            text-align: center;
         }
 
         .emailDiv {
             width: 424px;
-            margin-top: 8px;
+            margin-bottom: 8px;
+
             input {
                 padding: 12px 24px;
                 width: 100%;
@@ -108,15 +87,26 @@
                 outline: none;
                 color: white;
             }
+        }
 
-            &:-webkit-autofill {
-                background-color: red !important;
+        .fullnameDiv {
+            width: 424px;
+            margin-bottom: 8px;
+
+            input {
+                padding: 12px 24px;
+                width: 100%;
+                border-radius: 100px;
+                border: 1px solid rgba(100, 100, 100, 0.16);
+                background-color: inherit;
+                outline: none;
+                color: white;
             }
         }
 
         .pwdDiv {
             width: 424px;
-            margin-top: 8px;
+            margin-bottom: 8px;
             position: relative;
 
             .eyeIconContainer {
@@ -164,50 +154,63 @@
 
             .continueBtn {
                 padding: 12px 24px;
-                width: 100%;
+                width: 424px;
                 border-radius: 100px;
                 border: 1px solid white;
                 background: #fff;
                 cursor: pointer;
                 border: none;
+
+                .errMsg {
+                    display: none;
+                }
             }
 
             .continueBtnDisabled {
                 padding: 12px 24px;
-                width: 100%;
+                width: 424px;
                 border-radius: 100px;
                 color: rgba(228, 229, 230, 0.48);
                 border: 1px solid #202124;
                 background: #202124;
                 cursor: default;
                 border: none;
-            }
 
-            .errMsg {
-                color: rgba(255, 62, 62, 0.48);
+                .errMsg {
+                    color: rgba(255, 62, 62, 0.48);
+                    font-family: Inter;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: 20px;
+                    position: absolute;
+                    bottom: -28px;
+                    right: 4px;
+                }
+            }
+        }
+
+        p.navigateToLogin {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #707070;
+            font-family: Inter;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 16px;
+
+            span {
+                color: #6055ec;
                 font-family: Inter;
                 font-size: 12px;
                 font-style: normal;
                 font-weight: 500;
-                line-height: 20px;
-                position: absolute;
-                bottom: -28px;
-                right: 4px;
+                line-height: 16px;
+                cursor: pointer;
             }
-        }
-
-        p.forgotPwd {
-            position: absolute;
-            bottom: 106px;
-            width: fit-content;
-            color: #6055ec;
-            text-align: center;
-            font-family: Inter;
-            font-size: 12px;
-            font-style: normal;
-            // font-weight: 500;
-            line-height: 16px;
-            cursor: pointer;
         }
 
         .companyTnC {
@@ -216,56 +219,22 @@
             transform: translateX(-50%);
             bottom: 16px;
             line-height: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 8px;
             p {
                 font-size: 10px;
-                user-select: none;
-            }
-            span {
-                color: #6055ec;
-                cursor: pointer;
-            }
-        }
-
-        .codeDiv {
-            width: 424px;
-            margin-top: 36px;
-            display: flex;
-            justify-content: center;
-            input {
-                padding: 12px 24px;
-                // width: 100%;
-                border-radius: 100px;
-                border: 1px solid rgba(100, 100, 100, 0.16);
-                background-color: inherit;
-                outline: none;
-                color: white;
-            }
-            input[type="text"]::-webkit-outer-spin-button,
-            input[type="text"]::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-            input[type="text"]::placeholder {
-                text-align: center; // Center the placeholder text
-            }
-
-            input[type="text"] {
-                text-align: left; // Center the actual input text as well
-            }
-        }
-
-        .resendCodeContainer {
-            display: flex;
-            justify-content: center;
-            p.resendCode {
-                color: rgba(228, 229, 230, 0.48);
+                color: #fff;
                 font-family: Inter;
-                font-size: 11px;
                 font-style: normal;
                 font-weight: 500;
-                line-height: 24px;
-                cursor: pointer;
-                width: fit-content;
+                line-height: 16px;
+                text-align: center;
+                span {
+                    color: #6055ec;
+                    cursor: pointer;
+                }
             }
         }
     }

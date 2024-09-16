@@ -1,12 +1,12 @@
 import React from "react";
 import style from "./Navbar.module.scss";
 
-const Navbar = ({ openSignupSidebar, openLoginModal }) => {
+const Navbar = ({ openSignupModal, openLoginModal }) => {
     const navItems = ["Login", "Signup", "Blog"];
 
     const handleNavClick = (navItem) => {
         if (navItem === "Signup") {
-            openSignupSidebar();
+            openSignupModal();
         }
         if (navItem === "Login") {
             openLoginModal();

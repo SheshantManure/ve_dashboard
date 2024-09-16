@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import style from "./loginModal.module.scss";
 import VeLogoForLogin from "../../../assets/svgs/loginModal/veLogoForLogin";
-import GoogleLogo from "../../../assets/svgs/signupSidebar/googleLogo";
+import GoogleLogo from "../../../assets/svgs/signupModal/googleLogo";
 import ShowPwd from "../../../assets/svgs/loginModal/showPwd";
 import HidePwd from "../../../assets/svgs/loginModal/hidePwd";
 
@@ -25,9 +25,9 @@ const LoginModal = ({ closeLoginModal }) => {
         }
     }, [emailInputDiv, pwdInputDiv]);
 
-    const emailRegex =
-        /^[^\s@]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|org|net|edu|gov|mil|int|info|biz|name|xyz|online|store|app|tech|io|us|uk|ca|au|de|fr|in|cn|jp|ru|br|za|mx|it|es|nz|[a-z]{2,63})$/i;
     const validateAndSetEmail = (e) => {
+        const emailRegex =
+            /^[^\s@]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|org|net|edu|gov|mil|int|info|biz|name|xyz|online|store|app|tech|io|us|uk|ca|au|de|fr|in|cn|jp|ru|br|za|mx|it|es|nz|[a-z]{2,63})$/i;
         if (emailRegex.test(e.target.value)) {
             setEnableContinueBtn(true);
         } else {
@@ -70,6 +70,8 @@ const LoginModal = ({ closeLoginModal }) => {
     };
 
     const handlePwdBackBtn = () => {
+        const emailRegex =
+            /^[^\s@]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|org|net|edu|gov|mil|int|info|biz|name|xyz|online|store|app|tech|io|us|uk|ca|au|de|fr|in|cn|jp|ru|br|za|mx|it|es|nz|[a-z]{2,63})$/i;
         setpwdInputDiv(false);
         setemailInputDiv(true);
         if (emailRegex.test(email)) {
@@ -83,6 +85,7 @@ const LoginModal = ({ closeLoginModal }) => {
         <div onClick={closeLoginModal} className={style.backdropContainer}>
             {!renderForgotPwdModal && (
                 <div
+                    onKeyDown={handleKeyPress}
                     onClick={(e) => e.stopPropagation()}
                     className={style.modalContainer}
                 >
@@ -123,7 +126,6 @@ const LoginModal = ({ closeLoginModal }) => {
                                 type="email"
                                 placeholder="work@email.com"
                                 onChange={validateAndSetEmail}
-                                onKeyDown={handleKeyPress}
                                 ref={emailInputRef}
                                 value={email}
                             />
@@ -144,7 +146,6 @@ const LoginModal = ({ closeLoginModal }) => {
                                 type={showPwd ? "text" : "password"}
                                 placeholder="Password"
                                 onChange={validateAndSetPwd}
-                                onKeyDown={handleKeyPress}
                                 ref={pwdInputRef}
                                 value={password}
                             />
@@ -181,13 +182,6 @@ const LoginModal = ({ closeLoginModal }) => {
                     >
                         forgot password?
                     </p>
-                    <div className={style.companyTnC}>
-                        <p>
-                            By signing up to create an account, I accept
-                            Company’s <span>Terms of Use</span> &{" "}
-                            <span>Privacy Policy</span>
-                        </p>
-                    </div>
                 </div>
             )}
             {renderForgotPwdModal && (

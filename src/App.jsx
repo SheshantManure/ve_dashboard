@@ -1,5 +1,5 @@
 import React from "react";
-import WelcomePage from "./views/pages/WelcomePage/welcomePage";
+import WelcomePage from "./views/pages/welcomePage/welcomePage";
 
 const App = () => {
     return <WelcomePage />;

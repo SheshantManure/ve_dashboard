@@ -10,6 +10,7 @@ import RightArrowLogo from "../../../assets/svgs/welcomePageLogos/rightArrowLogo
 import SignupModal from "../../components/signupModal/signupModal";
 import LoginModal from "../../components/loginModal/loginModal";
 import Hamburger from "../../../assets/svgs/mobileViewIcons/hamburger";
+import { gsap } from "gsap";
 
 const WelcomePage = () => {
     const [toggleSignupModal, setToggleSignupModal] = useState(false);
@@ -19,13 +20,18 @@ const WelcomePage = () => {
     );
 
     const promptInputRef = useRef(null);
-
-    // Function to handle window resize
     const handleResize = () => {
         setIsLargeScreen(window.innerWidth >= 500);
     };
+    const h1Ref = useRef(null);
+    const h2Ref = useRef(null);
+    const h3Ref = useRef(null);
+    const h4Ref = useRef(null);
+    const cardsRef = useRef(null);
+    const refreshPromptsRef = useRef(null);
+    const veLogoRef = useRef(null);
 
-    const handleKeyDown = (e) => {
+    const handleKeyPress = (e) => {
         if (e.ctrlKey && e.key.toLowerCase() === "l") {
             setloginModalToggle(true);
         } else if (e.ctrlKey && e.key.toLowerCase() === "s") {
@@ -35,15 +41,85 @@ const WelcomePage = () => {
 
     useEffect(() => {
         promptInputRef.current.focus();
-        // Add event listener for window resize
         window.addEventListener("resize", handleResize);
-        window.addEventListener("keydown", handleKeyDown);
+        window.addEventListener("keydown", handleKeyPress);
 
-        // Remove event listener on component unmount
         return () => {
             window.removeEventListener("resize", handleResize);
+            window.addEventListener("keydown", handleKeyPress);
         };
     }, []);
+
+    useEffect(() => {
+        const tl = gsap.timeline();
+
+        tl.fromTo(
+            h1Ref.current,
+            { y: "100%", opacity: 0 },
+            {
+                y: "0%",
+                opacity: 1,
+                duration: 0.6,
+                ease: "slow(0.7, 0.7, false)",
+            }
+        )
+            .fromTo(
+                [h2Ref.current, h3Ref.current],
+                { y: "100%", opacity: 0 },
+                {
+                    y: "0%",
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "slow(0.7, 0.7, false)",
+                },
+                "-=0.3"
+            )
+            .fromTo(
+                h4Ref.current,
+                { y: "100%", opacity: 0 },
+                {
+                    y: "0%",
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "slow(0.7, 0.7, false)",
+                },
+                "-=0.3"
+            )
+            .fromTo(
+                cardsRef.current,
+                { y: "100%", opacity: 0 },
+                {
+                    y: "0%",
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "slow(0.7, 0.7, false)",
+                },
+                "-=0.3"
+            )
+            .fromTo(
+                refreshPromptsRef.current,
+                { y: "100%", opacity: 0 },
+                {
+                    y: "0%",
+                    opacity: 1,
+                    duration: 0.6,
+                    ease: "slow(0.7, 0.7, false)",
+                },
+                "-=0.3"
+            )
+            .to(veLogoRef.current, {
+                scale: 0.5,
+                duration: 0.6,
+                ease: "slow(0.7, 0.7, false)",
+            })
+            .to(veLogoRef.current, { scale: 0.5, duration: 0.6, ease: "none" })
+            .to(veLogoRef.current, {
+                scale: 1,
+                duration: 0.6,
+                ease: "slow(0.7, 0.7, false)",
+            });
+    }, []);
+
     return (
         <div className={style.container}>
             {toggleSignupModal && (
@@ -59,7 +135,7 @@ const WelcomePage = () => {
             )}
 
             <div className={style.veLogoStyles}>
-                <VeLogo />
+                <VeLogo veLogoRef={veLogoRef} />
                 {!isLargeScreen && (
                     <div className={style.hamburger}>
                         <Hamburger
@@ -82,20 +158,23 @@ const WelcomePage = () => {
             <div className={style.mainContent}>
                 <div className={style.mainBox}>
                     <div className={style.title}>
-                        <h1>
+                        <h1 ref={h1Ref}>
                             Welcome to <VeLogo />
                         </h1>
-                        <h2>AI that minds your business</h2>
-                        <h3>
+                        <h2 ref={h2Ref}>AI that minds your business</h2>
+                        <h3 ref={h3Ref}>
                             So you can run the world. The all-in-one tool for
                             those who do it all.
                         </h3>
                     </div>
-                    <h4 className={style.gettingStarted}>
+                    <h4 ref={h4Ref} className={style.gettingStarted}>
                         Let’s get started with any of these actions!
                     </h4>
-                    <Cards />
-                    <div className={style.refreshPrompts}>
+                    <Cards cardsRef={cardsRef} />
+                    <div
+                        ref={refreshPromptsRef}
+                        className={style.refreshPrompts}
+                    >
                         <RefreshLogo />
                         <h4>Refresh Prompts</h4>
                     </div>

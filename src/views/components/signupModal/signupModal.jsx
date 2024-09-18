@@ -115,35 +115,49 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             e?.target?.value || pwdInputRef?.current?.value || password || "";
         const pwdRegex =
             /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-
-        if (password.length === 1 && isBackspacePressed) {
-            setPassword("");
-            setErrMsg("");
+        if (inputPwd !== "") {
+            if (password.length === 1 && isBackspacePressed) {
+                setPassword("");
+                setErrMsg("");
+                setEnableContinueBtn(false);
+                setIsBackspacePressed(false);
+                return;
+            }
+            if (inputPwd.includes(" ")) {
+                setErrMsg("Password cannot contain spaces!");
+                setEnableContinueBtn(false);
+            } else if (inputPwd.length < 8) {
+                setErrMsg("Password must be at least 8 characters long.");
+                setEnableContinueBtn(false);
+            } else if (!/[A-Za-z]/.test(inputPwd)) {
+                setErrMsg("Password must contain at least one letter!");
+                setEnableContinueBtn(false);
+            } else if (!/[A-Z]/.test(inputPwd)) {
+                setErrMsg(
+                    "Password must contain at least one uppercase letter!"
+                );
+                setEnableContinueBtn(false);
+            } else if (!/[a-z]/.test(inputPwd)) {
+                setErrMsg(
+                    "Password must contain at least one lowercase letter!"
+                );
+                setEnableContinueBtn(false);
+            } else if (!/\d/.test(inputPwd)) {
+                setErrMsg("Password must contain at least one number!");
+                setEnableContinueBtn(false);
+            } else if (!/[@$!%*#?&]/.test(inputPwd)) {
+                setErrMsg(
+                    "Password must contain at least one special character!"
+                );
+                setEnableContinueBtn(false);
+            } else if (pwdRegex.test(inputPwd)) {
+                setErrMsg("");
+                setEnableContinueBtn(true);
+            }
+            setPassword(inputPwd);
+        } else {
             setEnableContinueBtn(false);
-            setIsBackspacePressed(false);
-            return;
         }
-
-        if (inputPwd === " ") {
-            setErrMsg("Password cannot contain spaces!");
-            setEnableContinueBtn(false);
-        } else if (inputPwd.length < 8) {
-            setErrMsg("Password must be at least 8 characters long.");
-            setEnableContinueBtn(false);
-        } else if (!/[A-Za-z]/.test(inputPwd)) {
-            setErrMsg("Password must contain at least one letter!");
-            setEnableContinueBtn(false);
-        } else if (!/\d/.test(inputPwd)) {
-            setErrMsg("Password must contain at least one number!");
-            setEnableContinueBtn(false);
-        } else if (!/[@$!%*#?&]/.test(inputPwd)) {
-            setErrMsg("Password must contain at least one special character!");
-            setEnableContinueBtn(false);
-        } else if (pwdRegex.test(inputPwd)) {
-            setErrMsg("");
-            setEnableContinueBtn(true);
-        }
-        setPassword(inputPwd);
     };
 
     const handleKeyPress = (e) => {
@@ -199,11 +213,11 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     };
 
     useEffect(() => {
-        if (emailInputDiv) {
+        if (emailInputDiv && emailInputRef.current) {
             emailInputRef.current.focus();
-        } else if (fullnameInputDiv) {
+        } else if (fullnameInputDiv && fullnameInputRef.current) {
             fullnameInputRef.current.focus();
-        } else if (pwdInputDiv) {
+        } else if (pwdInputDiv && pwdInputRef.current) {
             pwdInputRef.current.focus();
         }
     }, [emailInputDiv, fullnameInputDiv, pwdInputDiv]);
@@ -235,7 +249,7 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                         />
                     </div>
                 )}
-                {fullnameInputDiv && (
+                {/* {fullnameInputDiv && (
                     <div className={style.fullnameDiv}>
                         <input
                             type="text"
@@ -246,8 +260,8 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             value={fullname}
                         />
                     </div>
-                )}
-                {pwdInputDiv && (
+                )} */}
+                {/* {pwdInputDiv && (
                     <div className={style.pwdDiv}>
                         <div
                             onClick={() =>
@@ -266,7 +280,7 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             value={password}
                         />
                     </div>
-                )}
+                )} */}
                 <div className={style.actionBtns}>
                     <button
                         onClick={renderPreviousStep}

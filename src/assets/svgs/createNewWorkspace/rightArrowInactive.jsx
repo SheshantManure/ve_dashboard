@@ -1,0 +1,29 @@
+import React from "react";
+
+const RightArrowInactive = () => {
+    return (
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <rect
+                width="20"
+                height="20"
+                rx="10"
+                transform="matrix(-1 0 0 1 20 0)"
+                fill="#3F4449"
+                fill-opacity="0.24"
+            />
+            <path
+                d="M7.53021 13.06L10.5835 10L7.53021 6.94L8.47021 6L12.4702 10L8.47021 14L7.53021 13.06Z"
+                fill="#E4E5E6"
+                fill-opacity="0.24"
+            />
+        </svg>
+    );
+};
+
+export default RightArrowInactive;

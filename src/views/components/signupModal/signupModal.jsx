@@ -2,18 +2,32 @@ import React, { useState, useEffect, useRef } from "react";
 import style from "./signupModal.module.scss";
 import GoogleLogo from "../../../assets/svgs/signupModal/googleLogo";
 import VeLogoForSignup from "../../../assets/svgs/signupModal/veLogoForSignup";
-import ShowPwd from "../../../assets/svgs/loginModal/showPwd";
-import HidePwd from "../../../assets/svgs/loginModal/hidePwd";
+import LeftArrowInactive from "../../../assets/svgs/createNewWorkspace/leftArrowInactive";
+import RightArrowActive from "../../../assets/svgs/createNewWorkspace/rightArrowActive";
 
 const SignupModal = ({ openLoginModal, closeSignupModal }) => {
+    const [verificationCodeModalContainer, setVerificationCodeModalContainer] =
+        useState(false);
+    const [createWorkspaceModalContainer, setCreateWorkspaceModalContainer] =
+        useState(false);
+    const [verificationCode, setVerificationCode] = useState([
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+    ]);
+    const [isVerificationCodeComplete, setIsVerificationCodeComplete] =
+        useState(false);
+    const verificationCodeInputRefs = useRef([]);
+    const [emailModalContainer, setEmailModalContainer] = useState(true);
+
     const [emailInputDiv, setEmailInputDiv] = useState(true);
     const [fullnameInputDiv, setFullnameInputDiv] = useState(false);
     const [pwdInputDiv, setPwdInputDiv] = useState(false);
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [fullname, setFullname] = useState("");
-    const [showPwd, setShowPwd] = useState(false);
-    const [companyTnCChecked, setCompanyTnCChecked] = useState(false);
     const [errMsg, setErrMsg] = useState("");
 
     const emailInputRef = useRef(null);
@@ -26,6 +40,70 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     const handleOpenLoginModal = () => {
         closeSignupModal();
         openLoginModal();
+    };
+
+    const handlePaste = (e) => {
+        const pasteData = e.clipboardData.getData("text");
+        if (pasteData.length === 6 && /^\d+$/.test(pasteData)) {
+            const newCode = pasteData.split("");
+            setVerificationCode(newCode);
+            newCode.forEach((digit, index) => {
+                verificationCodeInputRefs.current[index].value = digit;
+            });
+            verificationCodeInputRefs.current[5].focus();
+        } else {
+            alert("The text you are trying to paste is not a 6 digits number!");
+        }
+        e.preventDefault();
+    };
+
+    const handleVerificationInput = (e, index) => {
+        const { value } = e.target;
+        const newCode = [...verificationCode];
+
+        if (isNaN(value) || value === " ") {
+            setErrMsg("Only numbers are allowed");
+            return;
+        } else {
+            setErrMsg("");
+        }
+
+        newCode[index] = value;
+        setVerificationCode(newCode);
+
+        setIsVerificationCodeComplete(
+            newCode.every((digit) => digit !== null && digit !== "")
+        );
+
+        if (value && index < 5) {
+            const nextInput = verificationCodeInputRefs.current[index + 1];
+            if (nextInput) {
+                nextInput.focus();
+            }
+        }
+    };
+
+    const handleVerificationKeyDown = (e, index) => {
+        if (e.key === "Backspace") {
+            if (
+                verificationCode[index] === null ||
+                verificationCode[index] === ""
+            ) {
+                if (index > 0) {
+                    verificationCodeInputRefs.current[index - 1].focus();
+                }
+            }
+        }
+    };
+
+    const handleBack = () => {
+        if (verificationCodeModalContainer) {
+            setVerificationCodeModalContainer(false);
+            validateAndSetEmail();
+            setEmailModalContainer(true);
+        } else if (emailModalContainer) {
+            closeSignupModal();
+        }
     };
 
     const validateAndSetEmail = (e) => {
@@ -60,13 +138,13 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             fullname ||
             "";
 
-        if (fullname.length === 1 && isBackspacePressed) {
-            setFullname("");
-            setErrMsg("");
-            setEnableContinueBtn(false);
-            setIsBackspacePressed(false);
-            return;
-        }
+        // if (fullname.length === 1 && isBackspacePressed) {
+        //     setFullname("");
+        //     setErrMsg("");
+        //     setEnableContinueBtn(false);
+        //     setIsBackspacePressed(false);
+        //     return;
+        // }
 
         const nameParts = inputName.split(/\s+/).filter((part) => part !== "");
         const firstName = nameParts[0];
@@ -110,55 +188,14 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         setEnableContinueBtn(true);
     };
 
-    const validateAndSetPwd = (e) => {
-        const inputPwd =
-            e?.target?.value || pwdInputRef?.current?.value || password || "";
-        const pwdRegex =
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-        if (inputPwd !== "") {
-            if (password.length === 1 && isBackspacePressed) {
-                setPassword("");
-                setErrMsg("");
-                setEnableContinueBtn(false);
-                setIsBackspacePressed(false);
-                return;
-            }
-            if (inputPwd.includes(" ")) {
-                setErrMsg("Password cannot contain spaces!");
-                setEnableContinueBtn(false);
-            } else if (inputPwd.length < 8) {
-                setErrMsg("Password must be at least 8 characters long.");
-                setEnableContinueBtn(false);
-            } else if (!/[A-Za-z]/.test(inputPwd)) {
-                setErrMsg("Password must contain at least one letter!");
-                setEnableContinueBtn(false);
-            } else if (!/[A-Z]/.test(inputPwd)) {
-                setErrMsg(
-                    "Password must contain at least one uppercase letter!"
-                );
-                setEnableContinueBtn(false);
-            } else if (!/[a-z]/.test(inputPwd)) {
-                setErrMsg(
-                    "Password must contain at least one lowercase letter!"
-                );
-                setEnableContinueBtn(false);
-            } else if (!/\d/.test(inputPwd)) {
-                setErrMsg("Password must contain at least one number!");
-                setEnableContinueBtn(false);
-            } else if (!/[@$!%*#?&]/.test(inputPwd)) {
-                setErrMsg(
-                    "Password must contain at least one special character!"
-                );
-                setEnableContinueBtn(false);
-            } else if (pwdRegex.test(inputPwd)) {
-                setErrMsg("");
-                setEnableContinueBtn(true);
-            }
-            setPassword(inputPwd);
-        } else {
-            setEnableContinueBtn(false);
+    useEffect(() => {
+        if (verificationCodeModalContainer) {
+            verificationCodeInputRefs.current[0].focus();
         }
-    };
+        if (createWorkspaceModalContainer) {
+            fullnameInputRef.current.focus();
+        }
+    }, [verificationCodeModalContainer, createWorkspaceModalContainer]);
 
     const handleKeyPress = (e) => {
         if (e.key === "Escape") {
@@ -181,22 +218,32 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     };
 
     const handleContinue = () => {
-        if (emailInputDiv && enableContinueBtn) {
-            setFullnameInputDiv(true);
-            setEnableContinueBtn(false);
-            setEmailInputDiv(false);
-            validateAndSetFullname();
+        if (emailModalContainer && enableContinueBtn) {
+            setEmailModalContainer(false);
             setErrMsg("");
-        } else if (fullnameInputDiv && enableContinueBtn) {
-            setPwdInputDiv(true);
-            setEnableContinueBtn(false);
-            setFullnameInputDiv(false);
-            validateAndSetPwd();
-            setErrMsg("");
-        } else if (pwdInputDiv && enableContinueBtn) {
-            console.log(email, password);
+            setVerificationCodeModalContainer(true);
+        } else if (verificationCodeModalContainer && enableContinueBtn) {
+            setVerificationCodeModalContainer(false);
+            setCreateWorkspaceModalContainer(true);
         }
     };
+    // const handleContinue = () => {
+    //     if (emailInputDiv && enableContinueBtn) {
+    //         setFullnameInputDiv(true);
+    //         setEnableContinueBtn(false);
+    //         setEmailInputDiv(false);
+    //         validateAndSetFullname();
+    //         setErrMsg("");
+    //     } else if (fullnameInputDiv && enableContinueBtn) {
+    //         setPwdInputDiv(true);
+    //         setEnableContinueBtn(false);
+    //         setFullnameInputDiv(false);
+    //         validateAndSetPwd();
+    //         setErrMsg("");
+    //     } else if (pwdInputDiv && enableContinueBtn) {
+    //         console.log(email, password);
+    //     }
+    // };
 
     const renderPreviousStep = () => {
         if (emailInputDiv) {
@@ -224,32 +271,33 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
 
     return (
         <div onClick={closeSignupModal} className={style.backdropContainer}>
-            <div
-                onClick={(e) => e.stopPropagation()}
-                className={style.modalContainer}
-            >
-                <div className={style.veLogoContainer}>
-                    <VeLogoForSignup />
-                    <p>Signup to create workspace</p>
-                </div>
-                <button className={style.continueWithGoogleBtn}>
-                    <GoogleLogo />
-                    <p>Continue with Google</p>
-                </button>
-                <p className={style.or}>or</p>
-                {emailInputDiv && (
-                    <div className={style.emailDiv}>
-                        <input
-                            type="email"
-                            placeholder="work@email.com"
-                            onChange={validateAndSetEmail}
-                            onKeyDown={handleKeyPress}
-                            ref={emailInputRef}
-                            value={email}
-                        />
+            {emailModalContainer && (
+                <div
+                    onClick={(e) => e.stopPropagation()}
+                    className={style.modalContainer}
+                >
+                    <div className={style.veLogoContainer}>
+                        <VeLogoForSignup />
+                        <p>Signup to create workspace</p>
                     </div>
-                )}
-                {/* {fullnameInputDiv && (
+                    <button className={style.continueWithGoogleBtn}>
+                        <GoogleLogo />
+                        <p>Continue with Google</p>
+                    </button>
+                    <p className={style.or}>or</p>
+                    {emailInputDiv && (
+                        <div className={style.emailDiv}>
+                            <input
+                                type="email"
+                                placeholder="work@email.com"
+                                onChange={validateAndSetEmail}
+                                onKeyDown={handleKeyPress}
+                                ref={emailInputRef}
+                                value={email}
+                            />
+                        </div>
+                    )}
+                    {/* {fullnameInputDiv && (
                     <div className={style.fullnameDiv}>
                         <input
                             type="text"
@@ -261,66 +309,140 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                         />
                     </div>
                 )} */}
-                {/* {pwdInputDiv && (
-                    <div className={style.pwdDiv}>
-                        <div
-                            onClick={() =>
-                                setShowPwd((prevState) => !prevState)
-                            }
-                            className={style.eyeIconContainer}
+                    <div className={style.actionBtns}>
+                        <button
+                            onClick={renderPreviousStep}
+                            className={style.backBtn}
                         >
-                            {showPwd ? <ShowPwd /> : <HidePwd />}
-                        </div>
-                        <input
-                            type={showPwd ? "text" : "password"}
-                            placeholder="Password"
-                            onChange={validateAndSetPwd}
-                            onKeyDown={handleKeyPress}
-                            ref={pwdInputRef}
-                            value={password}
-                        />
+                            Back
+                        </button>
+                        <button
+                            className={`${
+                                !enableContinueBtn
+                                    ? style.continueBtnDisabled
+                                    : style.continueBtn
+                            }`}
+                            onClick={handleContinue}
+                            disabled={!enableContinueBtn}
+                        >
+                            Continue
+                            <p className={style.errMsg}>{errMsg}</p>
+                        </button>
                     </div>
-                )} */}
-                <div className={style.actionBtns}>
-                    <button
-                        onClick={renderPreviousStep}
-                        className={style.backBtn}
-                    >
-                        Back
-                    </button>
-                    <button
-                        className={`${
-                            !enableContinueBtn
-                                ? style.continueBtnDisabled
-                                : style.continueBtn
-                        }`}
-                        onClick={handleContinue}
-                        disabled={!enableContinueBtn}
-                    >
-                        Continue
-                        <p className={style.errMsg}>{errMsg}</p>
-                    </button>
-                </div>
-                <p className={style.navigateToLogin}>
-                    Already have an account?{" "}
-                    <span onClick={handleOpenLoginModal}>Login</span>
-                </p>
-                <div className={style.companyTnC}>
-                    <input
-                        type="checkbox"
-                        checked={companyTnCChecked}
-                        onClick={() =>
-                            setCompanyTnCChecked((prevState) => !prevState)
-                        }
-                    />
-                    <p>
-                        By signing up to create a new account, I confirm that I
-                        have read and accept ve's
-                        <span> Terms of Use</span> &{" "}
-                        <span>Privacy Policy.</span>
+                    <p className={style.navigateToLogin}>
+                        Already have an account?{" "}
+                        <span onClick={handleOpenLoginModal}>Login</span>
                     </p>
+                    <div className={style.companyTnC}>
+                        <p>
+                            By signing up to create a new account, you agree to
+                            ve's <br />
+                            <span> Terms of Use</span> &{" "}
+                            <span>Privacy Policy.</span>
+                        </p>
+                    </div>
                 </div>
-            </div>
+            )}
+
+            {verificationCodeModalContainer && (
+                <div
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={handleKeyPress}
+                    className={style.forgotPwdModalContainer}
+                >
+                    <h1 className={style.title}>We sent you a code</h1>
+                    <div className={style.codeDiv}>
+                        {verificationCode.map((digit, key) => {
+                            return (
+                                <div className={style.digitBox} key={key}>
+                                    <input
+                                        number="number"
+                                        maxLength="1"
+                                        value={digit || ""}
+                                        ref={(el) =>
+                                            (verificationCodeInputRefs.current[
+                                                key
+                                            ] = el)
+                                        }
+                                        placeholder="0"
+                                        onPaste={handlePaste}
+                                        onChange={(e) =>
+                                            handleVerificationInput(e, key)
+                                        }
+                                        onKeyDown={(e) =>
+                                            handleVerificationKeyDown(e, key)
+                                        }
+                                    />
+                                    {key !== 5 && (
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="2"
+                                            height="12"
+                                            viewBox="0 0 2 12"
+                                            fill="none"
+                                        >
+                                            <path
+                                                d="M0.599976 0V12"
+                                                stroke="#646464"
+                                                stroke-opacity="0.16"
+                                            />
+                                        </svg>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <p className={style.resendCode}>Resend code</p>
+                    <div className={style.actionBtns}>
+                        <button onClick={handleBack} className={style.backBtn}>
+                            Back
+                        </button>
+                        <button
+                            onClick={handleContinue}
+                            className={
+                                isVerificationCodeComplete
+                                    ? style.continueBtn
+                                    : style.continueBtnDisabled
+                            }
+                            disabled={!isVerificationCodeComplete}
+                        >
+                            Continue
+                        </button>
+                        <p className={style.errMsg}>{errMsg}</p>
+                    </div>
+                </div>
+            )}
+            {createWorkspaceModalContainer && (
+                <div
+                    onClick={(e) => e.stopPropagation()}
+                    onKeyDown={handleKeyPress}
+                    className={style.createWorkspaceModalContainer}
+                >
+                    <div className={style.titleContainer}>
+                        <h1 className={style.title}>Create workspace </h1>
+                        <div className={style.arrowNavs}>
+                            <LeftArrowInactive />
+                            <RightArrowActive />
+                        </div>
+                    </div>
+                    <div className={style.progressBar}>
+                        <div className={style.currentProgress}></div>
+                    </div>
+                    <div className={style.nameContainer}>
+                        <h1 className={style.name}>
+                            Could you please tell me your name?
+                        </h1>
+                        <input
+                            ref={fullnameInputRef}
+                            onInput={validateAndSetFullname}
+                            className={style.inputName}
+                            type="text"
+                            placeholder="Type your name here..."
+                        />
+                        <p className={style.errMsg}>{errMsg}</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -11,10 +11,12 @@ import SignupModal from "../../components/signupModal/signupModal";
 import LoginModal from "../../components/loginModal/loginModal";
 import Hamburger from "../../../assets/svgs/mobileViewIcons/hamburger";
 import { gsap } from "gsap";
+import MobielNavSidebar from "../../components/Navbar/mobielNavSidebar";
 
 const WelcomePage = () => {
     const [toggleSignupModal, setToggleSignupModal] = useState(false);
     const [loginModalToggle, setloginModalToggle] = useState(false);
+    const [showMobielNavSidebar, setShowMobielNavSidebar] = useState(false);
     const [isLargeScreen, setIsLargeScreen] = useState(
         window.innerWidth >= 500
     );
@@ -133,13 +135,22 @@ const WelcomePage = () => {
                     closeLoginModal={() => setloginModalToggle(false)}
                 />
             )}
+            {showMobielNavSidebar && (
+                <MobielNavSidebar
+                    closeMobileNavSidebar={() => setShowMobielNavSidebar(false)}
+                    openLoginModal={() => setloginModalToggle(true)}
+                    openSignupModal={() => setToggleSignupModal(true)}
+                />
+            )}
 
             <div className={style.veLogoStyles}>
                 <VeLogo veLogoRef={veLogoRef} />
                 {!isLargeScreen && (
                     <div className={style.hamburger}>
                         <Hamburger
-                        // openSignupSidebar={() => setToggleSignupModal(true)}
+                            openMobileNavSidebar={() =>
+                                setShowMobielNavSidebar(true)
+                            }
                         />
                     </div>
                 )}

@@ -4,6 +4,8 @@ import GoogleLogo from "../../../assets/svgs/signupModal/googleLogo";
 import VeLogoForSignup from "../../../assets/svgs/signupModal/veLogoForSignup";
 import LeftArrowInactive from "../../../assets/svgs/createNewWorkspace/leftArrowInactive";
 import RightArrowActive from "../../../assets/svgs/createNewWorkspace/rightArrowActive";
+import UploadLogo from "../../../assets/svgs/createNewWorkspace/uploadLogo";
+import PlusIcon from "../../../assets/svgs/createNewWorkspace/plusIcon";
 
 const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     const [verificationCodeModalContainer, setVerificationCodeModalContainer] =
@@ -25,14 +27,26 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
 
     const [emailInputDiv, setEmailInputDiv] = useState(true);
     const [fullnameInputDiv, setFullnameInputDiv] = useState(false);
-    const [pwdInputDiv, setPwdInputDiv] = useState(false);
     const [email, setEmail] = useState("");
     const [fullname, setFullname] = useState("");
+    const [bizUrl, setBizUrl] = useState("");
+    const [bizName, setBizName] = useState("");
+    const [bizType, setBizType] = useState("");
+    const [bizDomain, setBizDomain] = useState("");
+    const [selectedLogo, setSelectedLogo] = useState(null);
+
     const [errMsg, setErrMsg] = useState("");
+    const [nameErrMsg, setNameErrMsg] = useState("");
+    const [bizUrlErrMsg, setBizUrlErrMsg] = useState("");
+    const [bizNameErrMsg, setBizNameErrMsg] = useState("");
+    const [bizDomainErrMsg, setBizDomainErrMsg] = useState("");
 
     const emailInputRef = useRef(null);
     const fullnameInputRef = useRef(null);
-    const pwdInputRef = useRef(null);
+    const bizUrlInputRef = useRef(null);
+    const bizNameInputRef = useRef(null);
+    const bizDomainInputRef = useRef(null);
+
     const [isBackspacePressed, setIsBackspacePressed] = useState(false);
 
     const [enableContinueBtn, setEnableContinueBtn] = useState(false);
@@ -152,21 +166,21 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         const nameRegex = /^[A-Za-z]+$/;
 
         if (inputName === "") {
-            setErrMsg("");
+            setNameErrMsg("");
             setFullname(inputName);
             setEnableContinueBtn(false);
             return;
         }
 
         if (nameParts.length === 0) {
-            setErrMsg("Full name cannot be just space(s)!");
+            setNameErrMsg("Full name cannot be just space(s)!");
             setFullname(inputName);
             setEnableContinueBtn(false);
             return;
         }
 
         if (!firstName || firstName.length < 2 || !nameRegex.test(firstName)) {
-            setErrMsg(
+            setNameErrMsg(
                 "First name must contain only letters and be at least 2 characters long."
             );
             setFullname(inputName);
@@ -175,7 +189,7 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         }
 
         if (!lastName || lastName.length < 2 || !nameRegex.test(lastName)) {
-            setErrMsg(
+            setNameErrMsg(
                 "Last name must contain only letters and be at least 2 characters long."
             );
             setFullname(inputName);
@@ -184,8 +198,74 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         }
 
         setFullname(nameParts.join(" "));
-        setErrMsg("");
+        setNameErrMsg("");
         setEnableContinueBtn(true);
+    };
+
+    const validateAndSetBizUrl = (e) => {
+        const url =
+            e?.target?.value || bizUrlInputRef?.current?.value || bizUrl || "";
+        const urlPattern =
+            /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w- ;,./?%&=]*)?$/i;
+        const isValidUrl = urlPattern.test(url);
+
+        if (isValidUrl) {
+            setBizUrl(url);
+            setBizUrlErrMsg("");
+        } else {
+            setBizUrlErrMsg(
+                "Please enter a valid URL starting with http:// or https://"
+            );
+        }
+    };
+
+    const validateAndSetBizName = (e) => {
+        const name =
+            e?.target?.value?.trim() ||
+            bizNameInputRef?.current?.value ||
+            bizName ||
+            "";
+        if (name === "") {
+            setBizNameErrMsg("Business name cannot be empty.");
+        } else if (name.length < 2) {
+            setBizNameErrMsg(
+                "Business name must be at least 2 characters long."
+            );
+        } else {
+            setBizNameErrMsg("");
+            setBizName(name);
+        }
+    };
+
+    const validateAndSetBizDomain = (e) => {
+        const domain =
+            e?.target?.value?.trim() ||
+            bizDomainInputRef?.current?.value ||
+            bizDomain ||
+            "";
+        const domainPattern = /^[a-zA-Z0-9-]+$/;
+
+        if (domain === "") {
+            setBizDomainErrMsg("Domain name cannot be empty.");
+        } else if (!domainPattern.test(domain)) {
+            setBizDomainErrMsg(
+                "Domain name can only contain letters, numbers, and hyphens."
+            );
+        } else {
+            setBizDomain(domain);
+            setBizDomainErrMsg("");
+        }
+    };
+
+    const handleLogoUpload = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedLogo(reader.result); // Set the uploaded logo as the preview
+            };
+            reader.readAsDataURL(file); // Read the file as a Data URL
+        }
     };
 
     useEffect(() => {
@@ -205,13 +285,17 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                 setFullnameInputDiv(false);
                 setEmailInputDiv(true);
                 validateAndSetEmail();
-            } else if (pwdInputDiv) {
-                setPwdInputDiv(false);
-                setFullnameInputDiv(true);
-                validateAndSetFullname();
             }
-        } else if (e.key === "Enter" && enableContinueBtn) {
-            handleContinue();
+        } else if (e.key === "Enter") {
+            if (
+                fullnameInputRef.current &&
+                fullnameInputRef.current.value.trim() !== "" &&
+                nameErrMsg === ""
+            ) {
+                bizUrlInputRef.current.focus();
+            } else if (enableContinueBtn) {
+                handleContinue();
+            }
         } else if (e.key === "Backspace") {
             setIsBackspacePressed(true);
         }
@@ -252,10 +336,6 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             setFullnameInputDiv(false);
             setEmailInputDiv(true);
             validateAndSetEmail();
-        } else if (pwdInputDiv) {
-            setPwdInputDiv(false);
-            setFullnameInputDiv(true);
-            validateAndSetFullname();
         }
     };
 
@@ -264,10 +344,8 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             emailInputRef.current.focus();
         } else if (fullnameInputDiv && fullnameInputRef.current) {
             fullnameInputRef.current.focus();
-        } else if (pwdInputDiv && pwdInputRef.current) {
-            pwdInputRef.current.focus();
         }
-    }, [emailInputDiv, fullnameInputDiv, pwdInputDiv]);
+    }, [emailInputDiv, fullnameInputDiv]);
 
     return (
         <div onClick={closeSignupModal} className={style.backdropContainer}>
@@ -439,7 +517,128 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             type="text"
                             placeholder="Type your name here..."
                         />
-                        <p className={style.errMsg}>{errMsg}</p>
+                        <p className={style.errMsg}>{nameErrMsg}</p>
+                    </div>
+                    <div className={style.bizUrlContainer}>
+                        <h1 className={style.bizUrl}>
+                            Could you share the URL to your business website or
+                            social media handle?
+                        </h1>
+                        <input
+                            ref={bizUrlInputRef}
+                            onInput={validateAndSetBizUrl}
+                            className={style.bizUrlInput}
+                            type="text"
+                            placeholder="https://"
+                        />
+                        <p className={style.errMsg}>{bizUrlErrMsg}</p>
+                    </div>
+                    <div className={style.bizNameContainer}>
+                        <h1 className={style.bizName}>Business Name</h1>
+                        <input
+                            ref={bizNameInputRef}
+                            onInput={validateAndSetBizName}
+                            className={style.bizNameInput}
+                            type="text"
+                            placeholder="Type your business name here..."
+                        />
+                        <p className={style.errMsg}>{bizNameErrMsg}</p>
+                    </div>
+                    <div className={style.bizTypeContainer}>
+                        <h1 className={style.bizType}>Select Business Type</h1>
+                        <select
+                            value={bizType}
+                            onChange={(e) => setBizType(e.target.value)}
+                            className={style.bizTypeInput}
+                        >
+                            <option value="">
+                                Select your business type...
+                            </option>
+                            <option value="Makeup Artist">Makeup Artist</option>
+                            <option value="Consultant">Consultant</option>
+                            <option value="Salon & Spa">Salon & Spa</option>
+                            <option value="Architect">Architect</option>
+                            <option value="Photography">Photography</option>
+                            <option value="Fashion Designer">
+                                Fashion Designer
+                            </option>
+                            <option value="Event Management">
+                                Event Management
+                            </option>
+                            <option value="Interior Designer">
+                                Interior Designer
+                            </option>
+                            <option value="Business Coach">
+                                Business Coach
+                            </option>
+                            <option value="Restaurateur">Restaurateur</option>
+                        </select>
+                    </div>
+                    <div className={style.bizDomainContainer}>
+                        <h1 className={style.bizDomain}>
+                            Choose a subdomain name
+                        </h1>
+                        <div className={style.bizDomainInputDiv}>
+                            <input
+                                ref={bizDomainInputRef}
+                                onInput={validateAndSetBizDomain}
+                                className={style.bizDomainInput}
+                                type="text"
+                                placeholder="company name"
+                            />
+                            <span className={style.domainExtension}>
+                                .ve.ai
+                            </span>
+                        </div>
+                        <p className={style.errMsg}>{bizDomainErrMsg}</p>
+                    </div>
+                    <div className={style.brandLogoAndColorContainer}>
+                        <div className={style.logoContainer}>
+                            <h1 className={style.yourLogo}>Your Logo</h1>
+                            <div className={style.uploadLogoDiv}>
+                                <label
+                                    htmlFor="fileUpload"
+                                    className={style.uploadLabel}
+                                >
+                                    <UploadLogo />
+                                    Select file to upload
+                                </label>
+
+                                <input
+                                    id="fileUpload"
+                                    type="file"
+                                    accept="image/*" // Accept only image files
+                                    onChange={handleLogoUpload} // Handle file selection
+                                    className={style.logoUploadInput}
+                                />
+                                <div
+                                    style={{ zIndex: selectedLogo ? 1 : -1 }}
+                                    className={style.imgPreview}
+                                >
+                                    {selectedLogo && (
+                                        <img
+                                            src={selectedLogo}
+                                            alt="Logo Preview"
+                                            width={"100%"}
+                                            className={style.logoPreview}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div className={style.colorContainer}>
+                            <h1 className={style.addBrandColors}>
+                                Add Brand Colors
+                            </h1>
+                            <div className={style.ColorPaletteContainer}>
+                                <PlusIcon className={style.plusIcon} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className={style.createWorkspaceBtnDiv}>
+                        <button className={style.createWorkspaceBtn}>
+                            Create Workspace
+                        </button>
                     </div>
                 </div>
             )}

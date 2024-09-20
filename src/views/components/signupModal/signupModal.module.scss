@@ -2,18 +2,27 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     backdrop-filter: blur(8px);
+    background-color: #121315a3;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2;
+    z-index: 4;
 
+    @media (max-width: 500px) {
+        .createWorkspaceModalContainer {
+            width: 100%;
+            padding: 0 24px;
+            .titleContainer {
+                margin-top: 24px !important ;
+            }
+        }
+    }
     .createWorkspaceModalContainer {
         width: 461px;
         height: 100%;
-        // border: 1px solid red;
 
         .titleContainer {
             margin: 96px 0 8px;
@@ -58,10 +67,18 @@
             }
         }
 
-        .nameContainer {
+        .nameContainer,
+        .bizUrlContainer,
+        .bizNameContainer,
+        .bizTypeContainer,
+        .bizDomainContainer {
             margin-top: 24px;
             position: relative;
-            h1.name {
+            h1.name,
+            h1.bizUrl,
+            h1.bizName,
+            h1.bizType,
+            h1.bizDomain {
                 color: rgba(228, 229, 230, 0.48);
                 font-family: Inter;
                 font-size: 12px;
@@ -70,20 +87,56 @@
                 line-height: 16px; /* 133.333% */
             }
 
-            input.inputName {
+            input.inputName,
+            input.bizUrlInput,
+            input.bizNameInput,
+            select.bizTypeInput {
                 margin-top: 8px;
                 color: rgba(228, 229, 230, 0.64);
                 font-family: Inter;
                 font-size: 13px;
                 font-style: normal;
                 font-weight: 400;
-                line-height: 18px; /* 138.462% */
+                line-height: 18px;
                 outline: none;
                 border-radius: 16px;
                 border: 1px solid rgba(100, 100, 100, 0.16);
                 background-color: inherit;
                 padding: 12px 24px;
                 width: 100%;
+            }
+
+            .bizDomainInputDiv {
+                position: relative;
+
+                input.bizDomainInput {
+                    margin-top: 8px;
+                    color: rgba(228, 229, 230, 0.64);
+                    font-family: Inter;
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 18px;
+                    outline: none;
+                    border-radius: 16px;
+                    border: 1px solid rgba(100, 100, 100, 0.16);
+                    background-color: inherit;
+                    padding: 12px 24px;
+                    width: 100%;
+                }
+
+                span.domainExtension {
+                    position: absolute;
+                    right: 24px;
+                    top: 50%;
+                    transform: translateY(calc(-50% + 4px));
+                    color: rgba(228, 229, 230, 0.24);
+                    font-family: Inter;
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 18px;
+                }
             }
 
             .errMsg {
@@ -94,8 +147,117 @@
                 font-weight: 500;
                 line-height: 20px;
                 position: absolute;
-                bottom: -28px;
-                right: 4px;
+                bottom: -20px;
+                right: 0;
+            }
+        }
+
+        .brandLogoAndColorContainer {
+            margin-top: 24px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 45px;
+
+            .logoContainer {
+                h1.yourLogo {
+                    color: rgba(228, 229, 230, 0.48);
+                    font-family: Inter;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 16px; /* 133.333% */
+                    margin-bottom: 8px;
+                }
+
+                .uploadLogoDiv {
+                    width: 145px;
+                    height: 89px;
+                    position: relative;
+                    border-radius: 20.345px;
+                    border: 1.5px solid rgba(100, 100, 100, 0.16);
+
+                    .uploadLabel {
+                        display: flex; /* Enable Flexbox */
+                        justify-content: center; /* Center content horizontally */
+                        align-items: center; /* Center content vertically */
+                        flex-direction: column;
+                        gap: 8px;
+                        width: 100%; /* Full width */
+                        height: 100%;
+
+                        width: 100%;
+                        height: 100%;
+                        cursor: pointer;
+                        color: rgba(228, 229, 230, 0.48);
+                        font-family: Inter;
+                        font-size: 12px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 14px;
+                    }
+
+                    input.logoUploadInput {
+                        display: none;
+                    }
+
+                    .imgPreview {
+                        width: 145px;
+                        height: 89px;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 101%;
+                            height: 100%;
+                            border-radius: 20.345px;
+                            object-fit: contain;
+                            border: 2px solid white;
+                            background-color: white;
+                        }
+                    }
+                }
+            }
+
+            .colorContainer {
+                h1.addBrandColors {
+                    color: rgba(228, 229, 230, 0.48);
+                    font-family: Inter;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 16px; /* 133.333% */
+                    margin-bottom: 8px;
+                }
+
+                .ColorPaletteContainer {
+                    svg {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        .createWorkspaceBtnDiv {
+            width: 100%;
+            height: 110px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            button.createWorkspaceBtn {
+                width: 328px;
+                height: 42px;
+                margin: 0 20px;
+                height: 42px;
+                border-radius: 100px;
+                background: #fff;
+                border: none;
+                cursor: pointer;
             }
         }
     }
@@ -236,6 +398,18 @@
         }
     }
 
+    @media (max-width: 500px) {
+        .modalContainer {
+            width: 100% !important;
+            padding: 24px !important;
+            margin: 8px;
+            display: flex;
+            // justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
     .modalContainer {
         width: 662px;
         height: 462px;
@@ -263,6 +437,12 @@
                 font-style: normal;
                 font-weight: 400;
                 line-height: 22px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            button.continueWithGoogleBtn {
+                width: 212px !important;
             }
         }
 
@@ -298,6 +478,12 @@
             line-height: 24px;
             padding: 16px 0;
             text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            .emailDiv {
+                width: 212px !important;
+            }
         }
 
         .emailDiv {
@@ -356,6 +542,12 @@
                 background-color: inherit;
                 outline: none;
                 color: white;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .actionBtns {
+                width: 212px !important;
             }
         }
 

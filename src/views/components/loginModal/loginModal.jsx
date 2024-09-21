@@ -10,6 +10,7 @@ const LoginModal = ({ closeLoginModal }) => {
     const [email, setEmail] = useState("");
     const [enableContinueBtn, setEnableContinueBtn] = useState(false);
     const [errMsg, setErrMsg] = useState("");
+    const [isBackspacePressed, setIsBackspacePressed] = useState(false);
     const [verificationCode, setVerificationCode] = useState([
         null,
         null,
@@ -37,16 +38,27 @@ const LoginModal = ({ closeLoginModal }) => {
     }, [verificationCodeModalContainer]);
 
     const validateAndSetEmail = (e) => {
-        const emailInput =
-            e?.target?.value || emailInputRef?.current?.value || email || "";
         const emailRegex =
             /^[^\s@]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.(com|org|net|edu|gov|mil|int|info|biz|name|xyz|online|store|app|tech|io|us|uk|ca|au|de|fr|in|cn|jp|ru|br|za|mx|it|es|nz|[a-z]{2,63})$/i;
+        let emailInput =
+            e?.target?.value || emailInputRef?.current?.value || email || "";
+
+        if (email.length === 1 && isBackspacePressed) {
+            setEmail("");
+            setErrMsg("");
+            setEnableContinueBtn(false);
+            setIsBackspacePressed(false);
+            return;
+        }
+
         if (emailRegex.test(emailInput)) {
             setEnableContinueBtn(true);
             setErrMsg("");
+        } else if (emailInput === "") {
+            setErrMsg("");
         } else {
             setEnableContinueBtn(false);
-            setErrMsg("Invalid Email!");
+            setErrMsg("Warning: Invalid Email!");
         }
         setEmail(emailInput);
     };
@@ -90,6 +102,8 @@ const LoginModal = ({ closeLoginModal }) => {
             setEmailModalContainer(true);
         } else if (e.key === "Escape" && emailModalContainer) {
             closeLoginModal();
+        } else if (e.key === "Backspace") {
+            setIsBackspacePressed(true);
         }
     };
     const handleVerificationInput = (e, index) => {
@@ -146,12 +160,19 @@ const LoginModal = ({ closeLoginModal }) => {
         e.preventDefault();
     };
 
+    const emailModalContainerRef = useRef(null);
+
     return (
         <div onClick={closeLoginModal} className={style.backdropContainer}>
             {emailModalContainer && (
                 <div
+                    ref={emailModalContainerRef}
+                    tabindex="0"
                     onKeyDown={handleKeyPress}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                        emailModalContainerRef.current.focus();
+                        e.stopPropagation();
+                    }}
                     className={style.modalContainer}
                 >
                     <h1 className={style.loginTitle}>Login</h1>
@@ -190,7 +211,6 @@ const LoginModal = ({ closeLoginModal }) => {
                             type="email"
                             placeholder="work@email.com"
                             onChange={validateAndSetEmail}
-                            onKeyDown={handleKeyPress}
                             ref={emailInputRef}
                             value={email}
                         />

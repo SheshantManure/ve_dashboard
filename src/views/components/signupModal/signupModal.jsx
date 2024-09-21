@@ -6,6 +6,7 @@ import LeftArrowInactive from "../../../assets/svgs/createNewWorkspace/leftArrow
 import RightArrowActive from "../../../assets/svgs/createNewWorkspace/rightArrowActive";
 import UploadLogo from "../../../assets/svgs/createNewWorkspace/uploadLogo";
 import PlusIcon from "../../../assets/svgs/createNewWorkspace/plusIcon";
+import { Link } from "react-router-dom";
 
 const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     const [verificationCodeModalContainer, setVerificationCodeModalContainer] =
@@ -50,11 +51,29 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     const [isBackspacePressed, setIsBackspacePressed] = useState(false);
 
     const [enableContinueBtn, setEnableContinueBtn] = useState(false);
+    const [progressWidth, setProgressWidth] = useState(null);
+    const [progressStep, setProgressStep] = useState(1);
 
     const handleOpenLoginModal = () => {
         closeSignupModal();
         openLoginModal();
     };
+
+    useEffect(() => {
+        setProgressWidth(progressStep * 12.5 + "%");
+    }, [progressStep]);
+
+    useEffect(() => {
+        if (emailModalContainer && emailInputRef.current) {
+            emailInputRef.current.focus();
+        }
+    }, [emailModalContainer]);
+
+    useEffect(() => {
+        if (verificationCodeModalContainer) {
+            verificationCodeInputRefs.current[0].focus();
+        }
+    }, [verificationCodeModalContainer]);
 
     const handlePaste = (e) => {
         const pasteData = e.clipboardData.getData("text");
@@ -136,86 +155,138 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
 
         if (emailRegex.test(emailInput)) {
             setEnableContinueBtn(true);
+            setErrMsg("");
         } else if (emailInput === "") {
             setErrMsg("");
         } else {
             setEnableContinueBtn(false);
-            setErrMsg("Invalid Email!");
+            setErrMsg("Warning: Invalid Email!");
         }
         setEmail(emailInput);
     };
 
     const validateAndSetFullname = (e) => {
-        let inputName =
-            e?.target?.value ||
-            fullnameInputRef?.current?.value ||
-            fullname ||
-            "";
-
-        // if (fullname.length === 1 && isBackspacePressed) {
-        //     setFullname("");
-        //     setErrMsg("");
-        //     setEnableContinueBtn(false);
-        //     setIsBackspacePressed(false);
-        //     return;
-        // }
-
+        let inputName = e?.target?.value || "";
         const nameParts = inputName.split(/\s+/).filter((part) => part !== "");
         const firstName = nameParts[0];
         const lastName = nameParts[1];
         const nameRegex = /^[A-Za-z]+$/;
 
-        if (inputName === "") {
+        if (inputName !== "") {
+            if (nameParts.includes(" ")) {
+                setNameErrMsg("Warning: Name cannot be just space(s)!");
+                setFullname(inputName);
+                setEnableContinueBtn(false);
+                setProgressStep((prev) => {
+                    if (prev === 2) {
+                        return 1;
+                    } else {
+                        return prev;
+                    }
+                });
+                return;
+            }
+
+            if (firstName.includes(" "))
+                if (firstName.length >= 1 && firstName.length < 2) {
+                    setNameErrMsg(
+                        "Warning: First name must at least 2 characters long!"
+                    );
+                    setFullname(inputName);
+                    setEnableContinueBtn(false);
+                    setProgressStep((prev) => {
+                        if (prev === 2) {
+                            return 1;
+                        } else {
+                            return prev;
+                        }
+                    });
+                    return;
+                }
+
+            if (!nameRegex.test(firstName)) {
+                setNameErrMsg("Warning: First name must be alphabetic!");
+                setFullname(inputName);
+                setEnableContinueBtn(false);
+                setProgressStep((prev) => {
+                    if (prev === 2) {
+                        return 1;
+                    } else {
+                        return prev;
+                    }
+                });
+            }
+
+            if (!lastName || lastName.length < 1 || !nameRegex.test(lastName)) {
+                setNameErrMsg(
+                    "Last name must contain only letters and be at least 1 characters long."
+                );
+                setProgressStep((prev) => {
+                    if (prev === 2) {
+                        return 1;
+                    } else {
+                        return prev;
+                    }
+                });
+                setFullname(inputName);
+                setEnableContinueBtn(false);
+                return;
+            }
+            setFullname(nameParts.join(" "));
             setNameErrMsg("");
-            setFullname(inputName);
-            setEnableContinueBtn(false);
-            return;
+            setEnableContinueBtn(true);
+            setProgressStep((prev) => {
+                if (prev === 1) {
+                    return 2;
+                } else {
+                    return prev;
+                }
+            });
         }
-
-        if (nameParts.length === 0) {
-            setNameErrMsg("Full name cannot be just space(s)!");
-            setFullname(inputName);
-            setEnableContinueBtn(false);
-            return;
-        }
-
-        if (!firstName || firstName.length < 2 || !nameRegex.test(firstName)) {
-            setNameErrMsg(
-                "First name must contain only letters and be at least 2 characters long."
-            );
-            setFullname(inputName);
-            setEnableContinueBtn(false);
-            return;
-        }
-
-        if (!lastName || lastName.length < 2 || !nameRegex.test(lastName)) {
-            setNameErrMsg(
-                "Last name must contain only letters and be at least 2 characters long."
-            );
-            setFullname(inputName);
-            setEnableContinueBtn(false);
-            return;
-        }
-
-        setFullname(nameParts.join(" "));
-        setNameErrMsg("");
-        setEnableContinueBtn(true);
     };
 
     const validateAndSetBizUrl = (e) => {
         const url =
             e?.target?.value || bizUrlInputRef?.current?.value || bizUrl || "";
+
+        // Improved URL pattern (removed unnecessary escape for '.')
         const urlPattern =
-            /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w- ;,./?%&=]*)?$/i;
+            /^(https?:\/\/)((([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,}))|((\d{1,3}\.){3}\d{1,3}))(:\d+)?(\/[\w-]*)*(\/[\w- ;,./?%&=]*)?$/i;
+
+        const hasValidProtocol = /^(https?:\/\/)/i.test(url);
+        const hasValidDomainOrIP =
+            /((([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,}))|((\d{1,3}\.){3}\d{1,3}))/i.test(
+                url
+            );
+        const hasValidPort = /(:\d+)?/.test(url);
+        const hasValidPathAndQuery = /(\/[\w-]*)*(\/[\w- ;,./?%&=]*)?/.test(
+            url
+        );
+
         const isValidUrl = urlPattern.test(url);
 
         if (isValidUrl) {
-            setBizUrl(url);
             setBizUrlErrMsg("");
+            setProgressStep((prev) => (prev === 2 ? 3 : prev));
         } else {
-            setBizUrlErrMsg(
-                "Please enter a valid URL starting with http:// or https://"
-            );
+            // Now setting detailed error messages for each specific case
+            if (!hasValidProtocol) {
+                setBizUrlErrMsg("URL must start with http:// or https://");
+            } else if (!hasValidDomainOrIP) {
+                setBizUrlErrMsg("Please enter a valid domain or IP address.");
+            } else if (!hasValidPort && url.includes(":")) {
+                setBizUrlErrMsg(
+                    "Invalid port number format. Please check the port number."
+                );
+            } else if (!hasValidPathAndQuery) {
+                setBizUrlErrMsg(
+                    "Invalid path or query string. Please check the URL format."
+                );
+            } else {
+                setBizUrlErrMsg("Invalid URL. Please check the entire format.");
+            }
+            setProgressStep((prev) => (prev === 3 ? 2 : prev));
+            setBizUrl(url);
         }
     };
 
@@ -225,16 +296,21 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             bizNameInputRef?.current?.value ||
             bizName ||
             "";
+
         if (name === "") {
-            setBizNameErrMsg("Business name cannot be empty.");
+            setProgressStep((prev) => (prev === 3 ? 4 : prev));
+        } else if (name === " ") {
+            setBizNameErrMsg("Business name cannot be empty space(s).");
+            setProgressStep((prev) => (prev === 3 ? 4 : prev));
         } else if (name.length < 2) {
             setBizNameErrMsg(
                 "Business name must be at least 2 characters long."
             );
         } else {
             setBizNameErrMsg("");
-            setBizName(name);
+            setProgressStep((prev) => (prev === 4 ? 3 : prev));
         }
+        setBizName(name);
     };
 
     const validateAndSetBizDomain = (e) => {
@@ -277,26 +353,40 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         }
     }, [verificationCodeModalContainer, createWorkspaceModalContainer]);
 
-    const handleKeyPress = (e) => {
-        if (e.key === "Escape") {
-            if (emailInputDiv) {
+    const handleKeyPress = (e, inputType) => {
+        if (inputType === "fullname") {
+            if (
+                e.key === "Backspace" &&
+                fullnameInputRef.current.value.length === 1
+            ) {
+                validateAndSetFullname();
+                setProgressStep((prev) => (prev === 3 ? 2 : prev));
+                setNameErrMsg("");
+            }
+        }
+        if (inputType === "verificationCode") {
+            if (e.key === "Escape") {
+                setVerificationCodeModalContainer(false);
+                validateAndSetEmail();
+                setEmailModalContainer(true);
+            }
+        }
+        if (inputType === "email") {
+            if (e.key === "Enter") {
+                if (enableContinueBtn) {
+                    console.log("first");
+                    handleContinue();
+                }
+            } else if (e.key === "Escape") {
                 closeSignupModal();
-            } else if (fullnameInputDiv) {
-                setFullnameInputDiv(false);
-                setEmailInputDiv(true);
+            } else if (
+                e.key === "Backspace" &&
+                emailInputRef.current.value.length === 1
+            ) {
                 validateAndSetEmail();
             }
-        } else if (e.key === "Enter") {
-            if (
-                fullnameInputRef.current &&
-                fullnameInputRef.current.value.trim() !== "" &&
-                nameErrMsg === ""
-            ) {
-                bizUrlInputRef.current.focus();
-            } else if (enableContinueBtn) {
-                handleContinue();
-            }
-        } else if (e.key === "Backspace") {
+        }
+        if (e.key === "Backspace") {
             setIsBackspacePressed(true);
         }
     };
@@ -368,25 +458,13 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             <input
                                 type="email"
                                 placeholder="work@email.com"
-                                onChange={validateAndSetEmail}
-                                onKeyDown={handleKeyPress}
+                                onInput={validateAndSetEmail}
+                                onKeyDown={(e) => handleKeyPress(e, "email")}
                                 ref={emailInputRef}
                                 value={email}
                             />
                         </div>
                     )}
-                    {/* {fullnameInputDiv && (
-                    <div className={style.fullnameDiv}>
-                        <input
-                            type="text"
-                            placeholder="Full Name"
-                            onChange={validateAndSetFullname}
-                            onKeyDown={handleKeyPress}
-                            ref={fullnameInputRef}
-                            value={fullname}
-                        />
-                    </div>
-                )} */}
                     <div className={style.actionBtns}>
                         <button
                             onClick={renderPreviousStep}
@@ -416,7 +494,9 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             By signing up to create a new account, you agree to
                             ve's <br />
                             <span> Terms of Use</span> &{" "}
-                            <span>Privacy Policy.</span>
+                            <Link to="/privacy-policy">
+                                <span>Privacy Policy.</span>
+                            </Link>
                         </p>
                     </div>
                 </div>
@@ -425,7 +505,6 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             {verificationCodeModalContainer && (
                 <div
                     onClick={(e) => e.stopPropagation()}
-                    onKeyDown={handleKeyPress}
                     className={style.forgotPwdModalContainer}
                 >
                     <h1 className={style.title}>We sent you a code</h1>
@@ -447,9 +526,13 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                                         onChange={(e) =>
                                             handleVerificationInput(e, key)
                                         }
-                                        onKeyDown={(e) =>
-                                            handleVerificationKeyDown(e, key)
-                                        }
+                                        onKeyDown={(e) => {
+                                            handleKeyPress(
+                                                e,
+                                                "verificationCode"
+                                            );
+                                            handleVerificationKeyDown(e, key);
+                                        }}
                                     />
                                     {key !== 5 && (
                                         <svg
@@ -493,7 +576,6 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             {createWorkspaceModalContainer && (
                 <div
                     onClick={(e) => e.stopPropagation()}
-                    onKeyDown={handleKeyPress}
                     className={style.createWorkspaceModalContainer}
                 >
                     <div className={style.titleContainer}>
@@ -504,7 +586,10 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                         </div>
                     </div>
                     <div className={style.progressBar}>
-                        <div className={style.currentProgress}></div>
+                        <div
+                            style={{ width: progressWidth }}
+                            className={style.currentProgress}
+                        ></div>
                     </div>
                     <div className={style.nameContainer}>
                         <h1 className={style.name}>
@@ -513,6 +598,7 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                         <input
                             ref={fullnameInputRef}
                             onInput={validateAndSetFullname}
+                            onKeyDown={(e) => handleKeyPress(e, "fullname")}
                             className={style.inputName}
                             type="text"
                             placeholder="Type your name here..."

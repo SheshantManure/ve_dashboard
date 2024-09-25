@@ -45,6 +45,22 @@
         }
     }
 
+    @media (max-width: 500px) {
+        .modalContainer {
+            width: 100% !important;
+            margin: 0 36px !important;
+            padding: 24px !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .continueWithGoogleDiv {
+                width: 100% !important;
+            }
+        }
+    }
+
     .modalContainer {
         width: 662px;
         height: 462px;
@@ -129,6 +145,12 @@
             font-weight: 500;
             line-height: 24px;
             user-select: none;
+        }
+
+        @media (max-width: 500px) {
+            .emailDiv {
+                width: 100% !important;
+            }
         }
 
         .emailDiv {

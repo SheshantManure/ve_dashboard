@@ -23,6 +23,7 @@
     .createWorkspaceModalContainer {
         width: 461px;
         height: 100%;
+        overflow-x: visible;
 
         .titleContainer {
             margin: 96px 0 8px;
@@ -53,7 +54,7 @@
         .progressBar {
             width: 100%;
             height: 2px;
-            // background: rgba(228, 229, 230, 0.24);
+            background: rgba(228, 229, 230, 0.24);
             position: relative;
 
             .currentProgress {
@@ -136,6 +137,12 @@
                     font-style: normal;
                     font-weight: 400;
                     line-height: 18px;
+                }
+            }
+
+            @media (max-width: 500px) {
+                .errMsg {
+                    font-size: 10px !important;
                 }
             }
 
@@ -238,6 +245,13 @@
                     svg {
                         cursor: pointer;
                     }
+
+                    .selectedBrandClrDiv {
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 7px;
+                        border: 1px solid white;
+                    }
                 }
             }
         }
@@ -248,7 +262,7 @@
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            margin-bottom: 32px;
+            margin: 32px 0;
             button.createWorkspaceBtn {
                 width: 328px;
                 height: 42px;
@@ -258,6 +272,23 @@
                 background: #fff;
                 border: none;
                 cursor: pointer;
+            }
+        }
+    }
+
+    @media (max-width: 500px) {
+        .forgotPwdModalContainer {
+            width: 92% !important;
+
+            .codeDiv {
+                width: 90% !important;
+
+                .digitBox {
+                    input {
+                        width: 34px !important;
+                        height: 34px !important;
+                    }
+                }
             }
         }
     }
@@ -287,16 +318,12 @@
         }
 
         .codeDiv {
-            // border-radius: 20px;
             width: 424px;
-            // padding: 12px 24px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 24px;
             margin-bottom: 36px;
-            // border: 1px solid rgba(100, 100, 100, 0.16);
-            // background: #202124;
 
             .digitBox {
                 position: relative;
@@ -327,6 +354,12 @@
             }
         }
 
+        @media (max-width: 500px) {
+            p.resendCode {
+                left: 22px !important;
+            }
+        }
+
         p.resendCode {
             color: rgba(228, 229, 230, 0.48);
             font-family: Inter;
@@ -344,6 +377,13 @@
                 text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.8);
             }
         }
+
+        @media (max-width: 500px) {
+            .actionBtns {
+                width: 90% !important;
+            }
+        }
+
         .actionBtns {
             display: flex;
             gap: 12px;
@@ -400,7 +440,7 @@
 
     @media (max-width: 500px) {
         .modalContainer {
-            width: 100% !important;
+            width: 92% !important;
             padding: 24px !important;
             margin: 8px;
             display: flex;
@@ -442,7 +482,7 @@
 
         @media (max-width: 500px) {
             button.continueWithGoogleBtn {
-                width: 212px !important;
+                width: 90% !important;
             }
         }
 
@@ -482,7 +522,7 @@
 
         @media (max-width: 500px) {
             .emailDiv {
-                width: 212px !important;
+                width: 90% !important;
             }
         }
 
@@ -547,7 +587,7 @@
 
         @media (max-width: 500px) {
             .actionBtns {
-                width: 212px !important;
+                width: 90% !important;
             }
         }
 

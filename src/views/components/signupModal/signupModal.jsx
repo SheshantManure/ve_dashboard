@@ -7,6 +7,7 @@ import RightArrowActive from "../../../assets/svgs/createNewWorkspace/rightArrow
 import UploadLogo from "../../../assets/svgs/createNewWorkspace/uploadLogo";
 import PlusIcon from "../../../assets/svgs/createNewWorkspace/plusIcon";
 import { Link } from "react-router-dom";
+import ColorPicker from "./colorPicker";
 
 const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     const [verificationCodeModalContainer, setVerificationCodeModalContainer] =
@@ -35,24 +36,50 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     const [bizType, setBizType] = useState("");
     const [bizDomain, setBizDomain] = useState("");
     const [selectedLogo, setSelectedLogo] = useState(null);
+    const [brandClr, setBrandClr] = useState("#FFFFFF");
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [clrSelected, setClrSelected] = useState(false);
+    const [showClrCode, setShowClrCode] = useState(false);
 
     const [errMsg, setErrMsg] = useState("");
     const [nameErrMsg, setNameErrMsg] = useState("");
     const [bizUrlErrMsg, setBizUrlErrMsg] = useState("");
     const [bizNameErrMsg, setBizNameErrMsg] = useState("");
+    const [bizTypeErrMsg, setBizTypeErrMsg] = useState("");
     const [bizDomainErrMsg, setBizDomainErrMsg] = useState("");
 
     const emailInputRef = useRef(null);
     const fullnameInputRef = useRef(null);
     const bizUrlInputRef = useRef(null);
     const bizNameInputRef = useRef(null);
+    const bizTypeInputRef = useRef(null);
     const bizDomainInputRef = useRef(null);
+    const logoInputRef = useRef(null);
 
     const [isBackspacePressed, setIsBackspacePressed] = useState(false);
 
     const [enableContinueBtn, setEnableContinueBtn] = useState(false);
     const [progressWidth, setProgressWidth] = useState(null);
     const [progressStep, setProgressStep] = useState(1);
+    const [isFieldSet, setIsFieldSet] = useState([
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+    ]);
+
+    useEffect(() => {
+        let steps = 1;
+        for (let i = 0; i < isFieldSet.length; i++) {
+            if (isFieldSet[i]) {
+                steps = steps + 1;
+            }
+        }
+        setProgressStep(steps);
+    }, [isFieldSet]);
 
     const handleOpenLoginModal = () => {
         closeSignupModal();
@@ -70,10 +97,31 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     }, [emailModalContainer]);
 
     useEffect(() => {
-        if (verificationCodeModalContainer) {
-            verificationCodeInputRefs.current[0].focus();
+        if (clrSelected) {
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[6] = true;
+                return newState;
+            });
         }
-    }, [verificationCodeModalContainer]);
+    }, [clrSelected]);
+
+    useEffect(() => {
+        if (verificationCodeModalContainer) {
+            for (let i = 0; i < verificationCode.length; i++) {
+                if (
+                    verificationCode[i] === null ||
+                    verificationCode[i] === ""
+                ) {
+                    verificationCodeInputRefs.current[i].focus();
+                    return;
+                }
+            }
+            verificationCodeInputRefs.current[
+                verificationCode.length - 1
+            ].focus();
+        }
+    }, [verificationCodeModalContainer, verificationCode]);
 
     const handlePaste = (e) => {
         const pasteData = e.clipboardData.getData("text");
@@ -166,7 +214,7 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     };
 
     const validateAndSetFullname = (e) => {
-        let inputName = e?.target?.value || "";
+        let inputName = e?.target?.value || fullname || "";
         const nameParts = inputName.split(/\s+/).filter((part) => part !== "");
         const firstName = nameParts[0];
         const lastName = nameParts[1];
@@ -176,13 +224,10 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             if (nameParts.includes(" ")) {
                 setNameErrMsg("Warning: Name cannot be just space(s)!");
                 setFullname(inputName);
-                setEnableContinueBtn(false);
-                setProgressStep((prev) => {
-                    if (prev === 2) {
-                        return 1;
-                    } else {
-                        return prev;
-                    }
+                setIsFieldSet((prevState) => {
+                    const newState = [...prevState];
+                    newState[0] = false;
+                    return newState;
                 });
                 return;
             }
@@ -194,12 +239,10 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                     );
                     setFullname(inputName);
                     setEnableContinueBtn(false);
-                    setProgressStep((prev) => {
-                        if (prev === 2) {
-                            return 1;
-                        } else {
-                            return prev;
-                        }
+                    setIsFieldSet((prevState) => {
+                        const newState = [...prevState];
+                        newState[0] = false;
+                        return newState;
                     });
                     return;
                 }
@@ -208,12 +251,10 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                 setNameErrMsg("Warning: First name must be alphabetic!");
                 setFullname(inputName);
                 setEnableContinueBtn(false);
-                setProgressStep((prev) => {
-                    if (prev === 2) {
-                        return 1;
-                    } else {
-                        return prev;
-                    }
+                setIsFieldSet((prevState) => {
+                    const newState = [...prevState];
+                    newState[0] = false;
+                    return newState;
                 });
             }
 
@@ -221,26 +262,21 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                 setNameErrMsg(
                     "Last name must contain only letters and be at least 1 characters long."
                 );
-                setProgressStep((prev) => {
-                    if (prev === 2) {
-                        return 1;
-                    } else {
-                        return prev;
-                    }
+                setIsFieldSet((prevState) => {
+                    const newState = [...prevState];
+                    newState[0] = false;
+                    return newState;
                 });
                 setFullname(inputName);
-                setEnableContinueBtn(false);
                 return;
             }
             setFullname(nameParts.join(" "));
             setNameErrMsg("");
             setEnableContinueBtn(true);
-            setProgressStep((prev) => {
-                if (prev === 1) {
-                    return 2;
-                } else {
-                    return prev;
-                }
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[0] = true;
+                return newState;
             });
         }
     };
@@ -249,7 +285,16 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         const url =
             e?.target?.value || bizUrlInputRef?.current?.value || bizUrl || "";
 
-        // Improved URL pattern (removed unnecessary escape for '.')
+        if (url === "") {
+            setBizUrlErrMsg("");
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[1] = true;
+                return newState;
+            });
+            return;
+        }
+
         const urlPattern =
             /^(https?:\/\/)((([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,}))|((\d{1,3}\.){3}\d{1,3}))(:\d+)?(\/[\w-]*)*(\/[\w- ;,./?%&=]*)?$/i;
 
@@ -267,9 +312,12 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
 
         if (isValidUrl) {
             setBizUrlErrMsg("");
-            setProgressStep((prev) => (prev === 2 ? 3 : prev));
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[1] = true;
+                return newState;
+            });
         } else {
-            // Now setting detailed error messages for each specific case
             if (!hasValidProtocol) {
                 setBizUrlErrMsg("URL must start with http:// or https://");
             } else if (!hasValidDomainOrIP) {
@@ -285,7 +333,11 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             } else {
                 setBizUrlErrMsg("Invalid URL. Please check the entire format.");
             }
-            setProgressStep((prev) => (prev === 3 ? 2 : prev));
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[1] = false;
+                return newState;
+            });
             setBizUrl(url);
         }
     };
@@ -296,19 +348,35 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
             bizNameInputRef?.current?.value ||
             bizName ||
             "";
-
         if (name === "") {
-            setProgressStep((prev) => (prev === 3 ? 4 : prev));
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[2] = false;
+                return newState;
+            });
         } else if (name === " ") {
             setBizNameErrMsg("Business name cannot be empty space(s).");
-            setProgressStep((prev) => (prev === 3 ? 4 : prev));
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[2] = false;
+                return newState;
+            });
         } else if (name.length < 2) {
             setBizNameErrMsg(
                 "Business name must be at least 2 characters long."
             );
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[2] = false;
+                return newState;
+            });
         } else {
             setBizNameErrMsg("");
-            setProgressStep((prev) => (prev === 4 ? 3 : prev));
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[2] = true;
+                return newState;
+            });
         }
         setBizName(name);
     };
@@ -322,14 +390,39 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         const domainPattern = /^[a-zA-Z0-9-]+$/;
 
         if (domain === "") {
-            setBizDomainErrMsg("Domain name cannot be empty.");
+            setBizDomainErrMsg("");
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[4] = true;
+                return newState;
+            });
+            return;
+        }
+
+        if (domain === " ") {
+            setBizDomainErrMsg("Domain name cannot be empty space(s).");
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[4] = false;
+                return newState;
+            });
         } else if (!domainPattern.test(domain)) {
             setBizDomainErrMsg(
                 "Domain name can only contain letters, numbers, and hyphens."
             );
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[4] = false;
+                return newState;
+            });
         } else {
             setBizDomain(domain);
             setBizDomainErrMsg("");
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[4] = true;
+                return newState;
+            });
         }
     };
 
@@ -338,20 +431,22 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         if (file && file.type.startsWith("image/")) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setSelectedLogo(reader.result); // Set the uploaded logo as the preview
+                setSelectedLogo(reader.result);
             };
-            reader.readAsDataURL(file); // Read the file as a Data URL
+            reader.readAsDataURL(file);
+            setIsFieldSet((prevState) => {
+                const newState = [...prevState];
+                newState[5] = true;
+                return newState;
+            });
         }
     };
 
     useEffect(() => {
-        if (verificationCodeModalContainer) {
-            verificationCodeInputRefs.current[0].focus();
-        }
         if (createWorkspaceModalContainer) {
             fullnameInputRef.current.focus();
         }
-    }, [verificationCodeModalContainer, createWorkspaceModalContainer]);
+    }, [createWorkspaceModalContainer]);
 
     const handleKeyPress = (e, inputType) => {
         if (inputType === "fullname") {
@@ -362,6 +457,46 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                 validateAndSetFullname();
                 setProgressStep((prev) => (prev === 3 ? 2 : prev));
                 setNameErrMsg("");
+            } else if (e.key === "Enter") {
+                if (nameErrMsg === "") {
+                    if (fullnameInputRef.current.value.length === 0) {
+                        setNameErrMsg("Warning: This is a required field!");
+                    } else {
+                        bizUrlInputRef.current.focus();
+                    }
+                }
+            }
+        }
+        if (inputType === "bizUrl") {
+            if (e.key === "Enter") {
+                if (bizUrlErrMsg === "") {
+                    if (bizUrlInputRef.current.value.length === 0) {
+                        setIsFieldSet((prevState) => {
+                            const newState = [...prevState];
+                            newState[1] = true;
+                            return newState;
+                        });
+                        setBizUrlErrMsg("");
+                        bizNameInputRef.current.focus();
+                        // setBizUrlErrMsg("Warning: This is a required field!");
+                    } else {
+                        bizNameInputRef.current.focus();
+                    }
+                }
+            }
+        }
+        if (inputType === "bizName") {
+            if (e.key === "Enter") {
+                if (bizNameErrMsg === "") {
+                    if (bizNameInputRef.current.value.length === 0) {
+                        setBizNameErrMsg("Warning: This is a required field!");
+                    } else {
+                        bizTypeInputRef.current.focus();
+                        setTimeout(() => {
+                            bizTypeInputRef.current.click();
+                        }, 100);
+                    }
+                }
             }
         }
         if (inputType === "verificationCode") {
@@ -369,12 +504,15 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                 setVerificationCodeModalContainer(false);
                 validateAndSetEmail();
                 setEmailModalContainer(true);
+            } else if (e.key === "Enter") {
+                if (isVerificationCodeComplete) {
+                    handleContinue();
+                }
             }
         }
         if (inputType === "email") {
             if (e.key === "Enter") {
                 if (enableContinueBtn) {
-                    console.log("first");
                     handleContinue();
                 }
             } else if (e.key === "Escape") {
@@ -384,6 +522,15 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                 emailInputRef.current.value.length === 1
             ) {
                 validateAndSetEmail();
+            }
+        }
+        if (inputType === "bizDomain") {
+            if (e.key === "Enter") {
+                if (bizDomainErrMsg === "") {
+                    console.log("focus on lgo");
+                    logoInputRef.current.focus();
+                    logoInputRef.current.click();
+                }
             }
         }
         if (e.key === "Backspace") {
@@ -438,7 +585,16 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     }, [emailInputDiv, fullnameInputDiv]);
 
     return (
-        <div onClick={closeSignupModal} className={style.backdropContainer}>
+        <div
+            onClick={() => {
+                if (!showColorPicker) {
+                    closeSignupModal();
+                } else {
+                    setShowColorPicker(false);
+                }
+            }}
+            className={style.backdropContainer}
+        >
             {emailModalContainer && (
                 <div
                     onClick={(e) => e.stopPropagation()}
@@ -602,39 +758,88 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             className={style.inputName}
                             type="text"
                             placeholder="Type your name here..."
+                            required={true}
                         />
                         <p className={style.errMsg}>{nameErrMsg}</p>
                     </div>
-                    <div className={style.bizUrlContainer}>
+                    <div
+                        style={{
+                            opacity: isFieldSet[0] ? 1 : 0,
+                            height: isFieldSet[0] ? "auto" : 0,
+                            transition:
+                                "opacity 0.3s ease-out, height 0.3s ease-out",
+                        }}
+                        className={style.bizUrlContainer}
+                    >
                         <h1 className={style.bizUrl}>
                             Could you share the URL to your business website or
                             social media handle?
                         </h1>
                         <input
                             ref={bizUrlInputRef}
+                            onBlur={validateAndSetBizUrl}
                             onInput={validateAndSetBizUrl}
                             className={style.bizUrlInput}
+                            onKeyDown={(e) => handleKeyPress(e, "bizUrl")}
                             type="text"
                             placeholder="https://"
                         />
                         <p className={style.errMsg}>{bizUrlErrMsg}</p>
                     </div>
-                    <div className={style.bizNameContainer}>
+                    <div
+                        style={{
+                            opacity: isFieldSet[1] ? 1 : 0,
+                            height: isFieldSet[1] ? "auto" : 0,
+                            transition:
+                                "opacity 0.3s ease-out, height 0.3s ease-out",
+                        }}
+                        className={style.bizNameContainer}
+                    >
                         <h1 className={style.bizName}>Business Name</h1>
                         <input
                             ref={bizNameInputRef}
                             onInput={validateAndSetBizName}
+                            onKeyDown={(e) => handleKeyPress(e, "bizName")}
                             className={style.bizNameInput}
                             type="text"
                             placeholder="Type your business name here..."
                         />
                         <p className={style.errMsg}>{bizNameErrMsg}</p>
                     </div>
-                    <div className={style.bizTypeContainer}>
+                    <div
+                        style={{
+                            opacity: isFieldSet[2] ? 1 : 0,
+                            height: isFieldSet[2] ? "auto" : 0,
+                            transition:
+                                "opacity 0.3s ease-out, height 0.3s ease-out",
+                        }}
+                        className={style.bizTypeContainer}
+                    >
                         <h1 className={style.bizType}>Select Business Type</h1>
                         <select
+                            ref={bizTypeInputRef}
                             value={bizType}
-                            onChange={(e) => setBizType(e.target.value)}
+                            onChange={(e) => {
+                                setBizType(e.target.value);
+                                if (e.target.value === "") {
+                                    setIsFieldSet((prevState) => {
+                                        const newState = [...prevState];
+                                        newState[3] = false;
+                                        return newState;
+                                    });
+                                    setBizTypeErrMsg(
+                                        "Warning: This is a required field!"
+                                    );
+                                } else {
+                                    setIsFieldSet((prevState) => {
+                                        const newState = [...prevState];
+                                        newState[3] = true;
+                                        return newState;
+                                    });
+                                    setBizTypeErrMsg("");
+                                }
+                                bizDomainInputRef.current.focus();
+                            }}
                             className={style.bizTypeInput}
                         >
                             <option value="">
@@ -659,8 +864,17 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             </option>
                             <option value="Restaurateur">Restaurateur</option>
                         </select>
+                        <p className={style.errMsg}>{bizTypeErrMsg}</p>
                     </div>
-                    <div className={style.bizDomainContainer}>
+                    <div
+                        style={{
+                            opacity: isFieldSet[3] ? 1 : 0,
+                            height: isFieldSet[3] ? "auto" : 0,
+                            transition:
+                                "opacity 0.3s ease-out, height 0.3s ease-out",
+                        }}
+                        className={style.bizDomainContainer}
+                    >
                         <h1 className={style.bizDomain}>
                             Choose a subdomain name
                         </h1>
@@ -668,6 +882,9 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             <input
                                 ref={bizDomainInputRef}
                                 onInput={validateAndSetBizDomain}
+                                onKeyDown={(e) =>
+                                    handleKeyPress(e, "bizDomain")
+                                }
                                 className={style.bizDomainInput}
                                 type="text"
                                 placeholder="company name"
@@ -678,7 +895,15 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                         </div>
                         <p className={style.errMsg}>{bizDomainErrMsg}</p>
                     </div>
-                    <div className={style.brandLogoAndColorContainer}>
+                    <div
+                        style={{
+                            opacity: isFieldSet[4] ? 1 : 0,
+                            height: isFieldSet[4] ? "auto" : 0,
+                            transition:
+                                "opacity 0.3s ease-out, height 0.3s ease-out",
+                        }}
+                        className={style.brandLogoAndColorContainer}
+                    >
                         <div className={style.logoContainer}>
                             <h1 className={style.yourLogo}>Your Logo</h1>
                             <div className={style.uploadLogoDiv}>
@@ -691,10 +916,11 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                                 </label>
 
                                 <input
+                                    ref={logoInputRef}
                                     id="fileUpload"
                                     type="file"
-                                    accept="image/*" // Accept only image files
-                                    onChange={handleLogoUpload} // Handle file selection
+                                    accept="image/*"
+                                    onChange={handleLogoUpload}
                                     className={style.logoUploadInput}
                                 />
                                 <div
@@ -714,14 +940,103 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                         </div>
                         <div className={style.colorContainer}>
                             <h1 className={style.addBrandColors}>
-                                Add Brand Colors
+                                Choose your brand color
                             </h1>
                             <div className={style.ColorPaletteContainer}>
-                                <PlusIcon className={style.plusIcon} />
+                                {!clrSelected ? (
+                                    <div
+                                        onClick={() => setShowColorPicker(true)}
+                                    >
+                                        <PlusIcon />
+                                    </div>
+                                ) : (
+                                    <div
+                                        style={{
+                                            backgroundColor: brandClr,
+                                            cursor: "pointer",
+                                        }}
+                                        onMouseEnter={() =>
+                                            setShowClrCode(brandClr)
+                                        }
+                                        onMouseLeave={() =>
+                                            setShowClrCode(false)
+                                        }
+                                        className={style.selectedBrandClrDiv}
+                                    >
+                                        {showClrCode && (
+                                            <div
+                                                onClick={() => {
+                                                    setShowColorPicker(true);
+                                                }}
+                                                style={{
+                                                    borderRadius: "7px",
+                                                    border: "1px solid rgba(100, 100, 100, 0.16)",
+                                                    display: "flex",
+                                                    width: "136px",
+                                                    height: "31px",
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <h1
+                                                    style={{
+                                                        color: "#E4E5E6",
+                                                        fontFamily: "Inter",
+                                                        fontSize: "12px",
+                                                        fontStyle: "normal",
+                                                        fontWeight: "400",
+                                                        lineHeight: "16px",
+                                                        margin: "0 8px",
+                                                    }}
+                                                >
+                                                    {brandClr}
+                                                </h1>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="14"
+                                                    height="14"
+                                                    viewBox="0 0 14 14"
+                                                    fill="none"
+                                                >
+                                                    <path
+                                                        d="M8.20167 5.26167L8.73833 5.79833L3.45333 11.0833H2.91667V10.5467L8.20167 5.26167ZM10.3017 1.75C10.1558 1.75 10.0042 1.80833 9.89333 1.91917L8.82583 2.98667L11.0133 5.17417L12.0808 4.10667C12.1349 4.0527 12.1778 3.9886 12.2071 3.91803C12.2364 3.84746 12.2514 3.77181 12.2514 3.69542C12.2514 3.61902 12.2364 3.54337 12.2071 3.4728C12.1778 3.40223 12.1349 3.33813 12.0808 3.28417L10.7158 1.91917C10.5992 1.8025 10.4533 1.75 10.3017 1.75ZM8.20167 3.61083L1.75 10.0625V12.25H3.9375L10.3892 5.79833L8.20167 3.61083Z"
+                                                        fill="#E4E5E6"
+                                                        fill-opacity="0.48"
+                                                    />
+                                                </svg>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                                <div
+                                    style={{
+                                        opacity: showColorPicker ? 1 : 0,
+                                        display: showColorPicker
+                                            ? "block"
+                                            : "none",
+                                        transition: "opacity 0.3s ease-out",
+                                    }}
+                                    className={style.colorPalette}
+                                >
+                                    <ColorPicker
+                                        colorValue={brandClr}
+                                        setBrandClr={setBrandClr}
+                                        setShowColorPicker={setShowColorPicker}
+                                        setClrSelected={setClrSelected}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className={style.createWorkspaceBtnDiv}>
+                    <div
+                        style={{
+                            opacity: isFieldSet[6] ? 1 : 0,
+                            height: isFieldSet[6] ? "auto" : 0,
+                            transition:
+                                "opacity 0.3s ease-out, height 0.3s ease-out",
+                        }}
+                        className={style.createWorkspaceBtnDiv}
+                    >
                         <button className={style.createWorkspaceBtn}>
                             Create Workspace
                         </button>

@@ -3,7 +3,7 @@ import style from "./welcomePage.module.scss";
 import Navbar from "../../components/Navbar/Navbar";
 import VeLogo from "../../components/VeLogo/VeLogo";
 import Cards from "./cards";
-import RefreshLogo from "../../../assets/svgs/welcomePageLogos/refreshLogo";
+// import RefreshLogo from "../../../assets/svgs/welcomePageLogos/refreshLogo";
 import StarLogo from "../../../assets/svgs/welcomePageLogos/starLogo";
 import MicrophoneLogo from "../../../assets/svgs/welcomePageLogos/microphoneLogo";
 import RightArrowLogo from "../../../assets/svgs/welcomePageLogos/rightArrowLogo";
@@ -30,16 +30,24 @@ const WelcomePage = () => {
     const h3Ref = useRef(null);
     const h4Ref = useRef(null);
     const cardsRef = useRef(null);
-    const refreshPromptsRef = useRef(null);
+    // const refreshPromptsRef = useRef(null);
     const veLogoRef = useRef(null);
+    const promptContainerRef = useRef(null);
 
-    const handleKeyPress = (e) => {
-        if (e.ctrlKey && e.key.toLowerCase() === "l") {
-            setloginModalToggle(true);
-        } else if (e.ctrlKey && e.key.toLowerCase() === "s") {
-            setToggleSignupModal(true);
-        }
-    };
+    /*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * Handles key presses to toggle modals.
+     * @param {Object} e The event object.
+     * @listens document#keydown
+     */
+    /******  3693ad8e-5be0-4817-aa18-dbc16ea50040  *******/ const handleKeyPress =
+        (e) => {
+            if (e.ctrlKey && e.key.toLowerCase() === "l") {
+                setloginModalToggle(true);
+            } else if (e.ctrlKey && e.key.toLowerCase() === "s") {
+                setToggleSignupModal(true);
+            }
+        };
 
     useEffect(() => {
         promptInputRef.current.focus();
@@ -99,7 +107,7 @@ const WelcomePage = () => {
                 "-=0.3"
             )
             .fromTo(
-                refreshPromptsRef.current,
+                promptContainerRef.current,
                 { y: "100%", opacity: 0 },
                 {
                     y: "0%",
@@ -182,14 +190,17 @@ const WelcomePage = () => {
                         Let’s get started with any of these actions!
                     </h4>
                     <Cards cardsRef={cardsRef} />
-                    <div
+                    {/* <div
                         ref={refreshPromptsRef}
                         className={style.refreshPrompts}
                     >
                         <RefreshLogo />
                         <h4>Refresh Prompts</h4>
-                    </div>
-                    <div className={style.promptContainer}>
+                    </div> */}
+                    <div
+                        ref={promptContainerRef}
+                        className={style.promptContainer}
+                    >
                         <div className={style.box550px}>
                             <p className={style.heading}>
                                 Or Ask me anything about your business

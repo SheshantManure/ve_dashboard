@@ -10,10 +10,15 @@
     align-items: center;
     z-index: 4;
 
+    @media (max-width: 500px) {
+        width: 100%;
+        height: 100%;
+    }
+
     .PrivacyAndTermsModalContainer {
         display: flex;
-        width: 662px;
-        padding: 48px 96px;
+        width: 640px;
+        padding: 48px 42px;
         flex-direction: column;
         align-items: flex-start;
         // gap: 24px;

@@ -1,7 +1,4 @@
-import React from "react";
 
-const AiClientFilesLogo = () => {
-    return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="22"
@@ -48,7 +45,4 @@ const AiClientFilesLogo = () => {
                 </clipPath>
             </defs>
         </svg>
-    );
-};
 
-export default AiClientFilesLogo;

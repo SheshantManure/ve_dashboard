@@ -1,5 +1,5 @@
 import React from "react";
-import BackIcon from "../../../assets/svgs/mobileViewIcons/backIcon";
+import { ReactComponent as BackIcon } from "../../../assets/svg/mobile_view_icons/backIcon.svg";
 import style from "./MobileNavSidebar.module.scss";
 import { memo } from "react";
 
@@ -9,16 +9,16 @@ const MobileNavSidebar = ({
     closeMobileNavSidebar,
 }) => {
     // Handle login button click
-    const handleLogin = () => {
-        closeMobileNavSidebar();
-        openLoginModal();
-    };
+    // const handleLogin = () => {
+    //     closeMobileNavSidebar();
+    //     openLoginModal();
+    // };
 
     // Handle signup button click
-    const handleSignup = () => {
-        closeMobileNavSidebar();
-        openSignupModal();
-    };
+    // const handleSignup = () => {
+    //     closeMobileNavSidebar();
+    //     openSignupModal();
+    // };
 
     return (
         <div
@@ -38,8 +38,17 @@ const MobileNavSidebar = ({
                     </div>
                     <nav>
                         <ul>
-                            <li onClick={handleLogin}>Login</li>
-                            <li onClick={handleSignup}>Signup</li>{" "}
+                            <li
+                            // onClick={handleLogin}
+                            >
+                                Login
+                            </li>
+                            <li
+                            // onClick={handleSignup}
+                            >
+                                Signup
+                            </li>{" "}
+                            <li>Privacy and Terms</li>
                             {/* Added signup handler */}
                             <li>Blog</li>
                         </ul>

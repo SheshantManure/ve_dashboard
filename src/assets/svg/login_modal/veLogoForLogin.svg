@@ -1,7 +1,4 @@
-import React from "react";
 
-const VeLogoForLogin = () => {
-    return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -18,7 +15,4 @@ const VeLogoForLogin = () => {
                 fill="#E4E5E6"
             />
         </svg>
-    );
-};
-
-export default VeLogoForLogin;
+    

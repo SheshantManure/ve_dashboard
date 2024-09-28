@@ -1,7 +1,4 @@
-import React from "react";
 
-const PlusIcon = () => {
-    return (
         <svg
             width="32"
             height="32"
@@ -21,7 +18,3 @@ const PlusIcon = () => {
                 fill="black"
             />
         </svg>
-    );
-};
-
-export default PlusIcon;

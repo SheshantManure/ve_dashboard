@@ -1,7 +1,4 @@
-import React from "react";
 
-const UploadLogo = () => {
-    return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="25"
@@ -15,7 +12,4 @@ const UploadLogo = () => {
                 fill-opacity="0.48"
             />
         </svg>
-    );
-};
 
-export default UploadLogo;

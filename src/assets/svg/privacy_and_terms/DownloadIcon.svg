@@ -1,7 +1,4 @@
-import React from "react";
 
-const DownloadIcon = () => {
-    return (
         <svg
             width="22"
             height="22"
@@ -16,7 +13,4 @@ const DownloadIcon = () => {
                 fill="#E4E5E6"
             />
         </svg>
-    );
-};
-
-export default DownloadIcon;
+    

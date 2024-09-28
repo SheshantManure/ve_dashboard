@@ -1,11 +1,11 @@
 import React, { useState, useRef, memo } from "react";
 import style from "./index.module.scss";
-import AiSalesLogo from "../../../assets/svgs/landing_page/AiSalesLogo";
-import AiLinkInBioLogo from "../../../assets/svgs/landing_page/AiLinkInBioLogo";
-import InvoiceLogo from "../../../assets/svgs/landing_page/InvoiceLogo";
-import AiClientFilesLogo from "../../../assets/svgs/landing_page/AiClientFilesLogo";
+import { ReactComponent as AiSalesLogo } from "../../../assets/svg/landing_page/AiSalesLogo.svg";
+import { ReactComponent as AiLinkInBioLogo } from "../../../assets/svg/landing_page/AiLinkInBioLogo.svg";
+import { ReactComponent as InvoiceLogo } from "../../../assets/svg/landing_page/InvoiceLogo.svg";
+import { ReactComponent as AiClientFilesLogo } from "../../../assets/svg/landing_page/AiClientFilesLogo.svg";
 import { gsap } from "gsap";
-import CardContainer from "../../../assets/svgs/landing_page/CardContainer";
+import CardContainer from "../../../assets/svg/landing_page/CardContainer.jsx";
 
 const cards = [
     {

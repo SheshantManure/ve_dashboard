@@ -1,7 +1,4 @@
-import React from "react";
 
-const GoogleLogo = () => {
-    return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -34,7 +31,4 @@ const GoogleLogo = () => {
                 fill="#EA4335"
             />
         </svg>
-    );
-};
-
-export default GoogleLogo;
+   

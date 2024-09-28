@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./index.module.scss";
-import CrossIcon from "../../../assets/svgs/privacy_and_terms/CrossIcon";
-import DownloadIcon from "../../../assets/svgs/privacy_and_terms/DownloadIcon";
+import { ReactComponent as CrossIcon } from "../../../assets/svg/privacy_and_terms/CrossIcon.svg";
+import { ReactComponent as DownloadIcon } from "../../../assets/svg/privacy_and_terms/DownloadIcon.svg";
 
 const PrivacyAndTermsModal = ({ closePrivacyAndTermsModal }) => {
     return (

@@ -1,7 +1,4 @@
-import React from "react";
 
-const BackIcon = () => {
-    return (
         <svg
             width="25"
             height="25"
@@ -17,7 +14,4 @@ const BackIcon = () => {
                 stroke-linejoin="round"
             />
         </svg>
-    );
-};
-
-export default BackIcon;
+   

@@ -1,7 +1,4 @@
-import React from "react";
 
-const RightArrowLogo = () => {
-    return (
         <svg
             width="25"
             height="25"
@@ -22,7 +19,4 @@ const RightArrowLogo = () => {
                 fill="#111111"
             />
         </svg>
-    );
-};
-
-export default RightArrowLogo;
+    

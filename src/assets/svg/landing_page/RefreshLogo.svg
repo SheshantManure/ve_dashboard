@@ -1,7 +1,4 @@
-import React from "react";
 
-const RefreshLogo = () => {
-    return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="12"
@@ -18,7 +15,4 @@ const RefreshLogo = () => {
                 stroke-linejoin="round"
             />
         </svg>
-    );
-};
-
-export default RefreshLogo;
+   

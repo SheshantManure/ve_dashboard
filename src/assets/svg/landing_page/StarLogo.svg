@@ -1,7 +1,4 @@
-import React from "react";
 
-const StarLogo = () => {
-    return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -20,7 +17,4 @@ const StarLogo = () => {
                 fill-opacity="0.64"
             />
         </svg>
-    );
-};
-
-export default StarLogo;
+   

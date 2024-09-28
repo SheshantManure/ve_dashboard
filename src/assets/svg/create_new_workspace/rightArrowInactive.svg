@@ -1,7 +1,4 @@
-import React from "react";
 
-const RightArrowInactive = () => {
-    return (
         <svg
             width="20"
             height="20"
@@ -23,7 +20,4 @@ const RightArrowInactive = () => {
                 fill-opacity="0.24"
             />
         </svg>
-    );
-};
-
-export default RightArrowInactive;
+ 

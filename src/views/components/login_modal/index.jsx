@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-import style from "./loginModal.module.scss";
+import React, { useState, useRef, useEffect, memo } from "react";
+import style from "./index.module.scss";
 import VeLogoForLogin from "../../../assets/svgs/loginModal/veLogoForLogin";
 import GoogleLogo from "../../../assets/svgs/signupModal/googleLogo";
 
-const LoginModal = ({ closeLoginModal }) => {
+const LoginModal = ({ closeLoginModal, isOpen }) => {
     const [verificationCodeModalContainer, setVerificationCodeModalContainer] =
         useState(false);
     const [emailModalContainer, setEmailModalContainer] = useState(true);
@@ -162,7 +162,7 @@ const LoginModal = ({ closeLoginModal }) => {
 
     const emailModalContainerRef = useRef(null);
 
-    return (
+    return isOpen ? (
         <div onClick={closeLoginModal} className={style.backdropContainer}>
             {emailModalContainer && (
                 <div
@@ -305,7 +305,9 @@ const LoginModal = ({ closeLoginModal }) => {
                 </div>
             )}
         </div>
+    ) : (
+        <></>
     );
 };
 
-export default LoginModal;
+export default memo(LoginModal);

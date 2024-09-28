@@ -672,10 +672,11 @@
         }
 
         .companyTnC {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 16px;
+            // position: absolute;
+            // left: 50%;
+            // transform: translateX(-50%);
+            // bottom: 16px;
+            margin-top: 24px;
             line-height: 1rem;
             display: flex;
             justify-content: center;
@@ -689,6 +690,11 @@
                 font-weight: 500;
                 line-height: 16px;
                 text-align: center;
+
+                a {
+                    text-decoration: none;
+                }
+
                 span {
                     color: #6055ec;
                     cursor: pointer;

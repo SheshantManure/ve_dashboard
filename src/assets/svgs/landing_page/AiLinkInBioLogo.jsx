@@ -1,6 +1,6 @@
 import React from "react";
 
-const linkInBioLogo = () => {
+const AiLinkInBioLogo = () => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,4 +54,4 @@ const linkInBioLogo = () => {
     );
 };
 
-export default linkInBioLogo;
+export default AiLinkInBioLogo;

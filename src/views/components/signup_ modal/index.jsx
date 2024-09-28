@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import style from "./signupModal.module.scss";
+import style from "./index.module.scss";
 import GoogleLogo from "../../../assets/svgs/signupModal/googleLogo";
 import VeLogoForSignup from "../../../assets/svgs/signupModal/veLogoForSignup";
 import LeftArrowInactive from "../../../assets/svgs/createNewWorkspace/leftArrowInactive";
 import RightArrowActive from "../../../assets/svgs/createNewWorkspace/rightArrowActive";
 import UploadLogo from "../../../assets/svgs/createNewWorkspace/uploadLogo";
 import PlusIcon from "../../../assets/svgs/createNewWorkspace/plusIcon";
-import { Link } from "react-router-dom";
-import ColorPicker from "./colorPicker";
-
+import ColorPicker from "./ColorPicker";
+import { memo } from "react";
 const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     const [verificationCodeModalContainer, setVerificationCodeModalContainer] =
         useState(false);
@@ -81,10 +80,10 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
         setProgressStep(steps);
     }, [isFieldSet]);
 
-    const handleOpenLoginModal = () => {
-        closeSignupModal();
-        openLoginModal();
-    };
+    // const handleOpenLoginModal = () => {
+    //     closeSignupModal();
+    //     openLoginModal();
+    // };
 
     useEffect(() => {
         setProgressWidth(progressStep * 12.5 + "%");
@@ -602,7 +601,7 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                 >
                     <div className={style.veLogoContainer}>
                         <VeLogoForSignup />
-                        <p>Signup to create workspace</p>
+                        <p>Login to your workspace</p>
                     </div>
                     <button className={style.continueWithGoogleBtn}>
                         <GoogleLogo />
@@ -641,18 +640,16 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                             <p className={style.errMsg}>{errMsg}</p>
                         </button>
                     </div>
-                    <p className={style.navigateToLogin}>
+                    {/* <p className={style.navigateToLogin}>
                         Already have an account?{" "}
                         <span onClick={handleOpenLoginModal}>Login</span>
-                    </p>
+                    </p> */}
                     <div className={style.companyTnC}>
                         <p>
                             By signing up to create a new account, you agree to
                             ve's <br />
                             <span> Terms of Use</span> &{" "}
-                            <Link to="/privacy-policy">
-                                <span>Privacy Policy.</span>
-                            </Link>
+                            <span>Privacy Policy.</span>
                         </p>
                     </div>
                 </div>
@@ -887,7 +884,7 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
                                 }
                                 className={style.bizDomainInput}
                                 type="text"
-                                placeholder="company name"
+                                placeholder="businessname"
                             />
                             <span className={style.domainExtension}>
                                 .ve.ai
@@ -1047,4 +1044,4 @@ const SignupModal = ({ openLoginModal, closeSignupModal }) => {
     );
 };
 
-export default SignupModal;
+export default memo(SignupModal);

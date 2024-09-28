@@ -11,14 +11,14 @@
         margin: 24px;
         border-radius: 100px;
         border: 1px solid rgba(100, 100, 100, 0.16);
-        background: #121315;
+        background: #1e1f20;
 
         ul {
             display: flex;
             justify-content: center;
             list-style: none;
             gap: 36px;
-            padding: 12px 56px;
+            padding: 12px 24px;
 
             li {
                 color: var(--prim-font-clr);

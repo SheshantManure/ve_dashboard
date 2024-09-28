@@ -1,30 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
-import style from "./welcomePage.module.scss";
-import Navbar from "../../components/Navbar/Navbar";
-import VeLogo from "../../components/VeLogo/VeLogo";
-import Cards from "./cards";
+import React, { useState, useEffect, useRef, memo } from "react";
+import style from "./index.module.scss";
+import Navbar from "../../components/navbar";
+import VeLogo from "../../components/ve_logo/VeLogo";
+import Cards from "./Cards";
 // import RefreshLogo from "../../../assets/svgs/welcomePageLogos/refreshLogo";
-import StarLogo from "../../../assets/svgs/welcomePageLogos/starLogo";
-import MicrophoneLogo from "../../../assets/svgs/welcomePageLogos/microphoneLogo";
-import RightArrowLogo from "../../../assets/svgs/welcomePageLogos/rightArrowLogo";
-import SignupModal from "../../components/signupModal/signupModal";
-import LoginModal from "../../components/loginModal/loginModal";
-import Hamburger from "../../../assets/svgs/mobileViewIcons/hamburger";
+import StarLogo from "../../../assets/svgs/landing_page/StarLogo";
+import MicrophoneLogo from "../../../assets/svgs/landing_page/MicrophoneLogo";
+import RightArrowLogo from "../../../assets/svgs/landing_page/RightArrowLogo";
+import PrivacyAndTermsModal from "../../components/privacy_and_terms_modal";
+// import SignupModal from "../../components/signup_ modal";
+// import LoginModal from "../../components/login_modal";
+// import MobielNavSidebar from "../../components/navbar/MobielNavSidebar";
+// import ReactModal from "../../components/react_modal";
+import Hamburger from "../../../assets/svgs/mobile_view_icons/hamburger";
 import { gsap } from "gsap";
-import MobielNavSidebar from "../../components/Navbar/mobielNavSidebar";
 
-const WelcomePage = () => {
-    const [toggleSignupModal, setToggleSignupModal] = useState(false);
-    const [loginModalToggle, setloginModalToggle] = useState(false);
-    const [showMobielNavSidebar, setShowMobielNavSidebar] = useState(false);
+const LandingPage = () => {
+    // const [toggleSignupModal, setToggleSignupModal] = useState(false);
+    // const [toggleLoginModal, setloginModalToggle] = useState(false);
+    // const [showMobielNavSidebar, setShowMobielNavSidebar] = useState(false);
     const [isLargeScreen, setIsLargeScreen] = useState(
         window.innerWidth >= 500
     );
+    const [togglePrivacyAndTermsModal, setTogglePrivacyAndTermsModal] =
+        useState(false);
 
-    const promptInputRef = useRef(null);
-    const handleResize = () => {
-        setIsLargeScreen(window.innerWidth >= 500);
-    };
     const h1Ref = useRef(null);
     const h2Ref = useRef(null);
     const h3Ref = useRef(null);
@@ -32,35 +32,17 @@ const WelcomePage = () => {
     const cardsRef = useRef(null);
     // const refreshPromptsRef = useRef(null);
     const veLogoRef = useRef(null);
+    const promptInputRef = useRef(null);
     const promptContainerRef = useRef(null);
 
-    /*************  ✨ Codeium Command ⭐  *************/
-    /**
-     * Handles key presses to toggle modals.
-     * @param {Object} e The event object.
-     * @listens document#keydown
-     */
-    /******  3693ad8e-5be0-4817-aa18-dbc16ea50040  *******/ const handleKeyPress =
-        (e) => {
-            if (e.ctrlKey && e.key.toLowerCase() === "l") {
-                setloginModalToggle(true);
-            } else if (e.ctrlKey && e.key.toLowerCase() === "s") {
-                setToggleSignupModal(true);
-            }
-        };
+    useEffect(() => {
+        isLargeScreen && promptInputRef.current.focus();
+    }, [isLargeScreen]);
 
     useEffect(() => {
-        promptInputRef.current.focus();
         window.addEventListener("resize", handleResize);
-        window.addEventListener("keydown", handleKeyPress);
+        // window.addEventListener("keydown", handleKeyPress);
 
-        return () => {
-            window.removeEventListener("resize", handleResize);
-            window.addEventListener("keydown", handleKeyPress);
-        };
-    }, []);
-
-    useEffect(() => {
         const tl = gsap.timeline();
 
         tl.fromTo(
@@ -122,51 +104,60 @@ const WelcomePage = () => {
                 duration: 0.6,
                 ease: "slow(0.7, 0.7, false)",
             })
-            .to(veLogoRef.current, { scale: 0.5, duration: 0.6, ease: "none" })
+            .to(veLogoRef.current, {
+                scale: 0.5,
+                duration: 0.6,
+                ease: "none",
+            })
             .to(veLogoRef.current, {
                 scale: 1,
                 duration: 0.6,
                 ease: "slow(0.7, 0.7, false)",
             });
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            // window.addEventListener("keydown", handleKeyPress);
+        };
     }, []);
+
+    // const handleKeyPress = (e) => {
+    //     if (e.ctrlKey && e.key.toLowerCase() === "l") {
+    //         setloginModalToggle(true);
+    //     } else if (e.ctrlKey && e.key.toLowerCase() === "s") {
+    //         setToggleSignupModal(true);
+    //     }
+    // };
+
+    const handleResize = () => {
+        setIsLargeScreen(window.innerWidth >= 500);
+    };
+
+    const handleClosePrivacyAndTermsModal = () => {
+        setTogglePrivacyAndTermsModal(false);
+    };
 
     return (
         <div className={style.container}>
-            {toggleSignupModal && (
-                <SignupModal
-                    closeSignupModal={() => setToggleSignupModal(false)}
-                    openLoginModal={() => setloginModalToggle(true)}
-                />
-            )}
-            {loginModalToggle && (
-                <LoginModal
-                    closeLoginModal={() => setloginModalToggle(false)}
-                />
-            )}
-            {showMobielNavSidebar && (
-                <MobielNavSidebar
-                    closeMobileNavSidebar={() => setShowMobielNavSidebar(false)}
-                    openLoginModal={() => setloginModalToggle(true)}
-                    openSignupModal={() => setToggleSignupModal(true)}
-                />
-            )}
-
             <div className={style.veLogoStyles}>
                 <VeLogo veLogoRef={veLogoRef} />
                 {!isLargeScreen && (
                     <div className={style.hamburger}>
                         <Hamburger
-                            openMobileNavSidebar={() =>
-                                setShowMobielNavSidebar(true)
-                            }
+                        // openMobileNavSidebar={() =>
+                        //     setShowMobielNavSidebar(true)
+                        // }
                         />
                     </div>
                 )}
             </div>
             {isLargeScreen ? (
                 <Navbar
-                    openSignupModal={() => setToggleSignupModal(true)}
-                    openLoginModal={() => setloginModalToggle(true)}
+                    openPrivacyAndTermsModal={() =>
+                        setTogglePrivacyAndTermsModal(true)
+                    }
+                    // openSignupModal={() => setToggleSignupModal(true)}
+                    // openLoginModal={() => setloginModalToggle(true)}
                 />
             ) : (
                 // <div className={style.hamburger}>
@@ -228,8 +219,36 @@ const WelcomePage = () => {
                     </div>
                 </div>
             </div>
+            {togglePrivacyAndTermsModal && (
+                <PrivacyAndTermsModal
+                    closePrivacyAndTermsModal={handleClosePrivacyAndTermsModal}
+                />
+            )}
+            {/* <ReactModal isOpen={togglePrivacyAndTermsModal} modalType="">
+                <PrivacyAndTermsModal
+                    closePrivacyAndTermsModal={handleClosePrivacyAndTermsModal}
+                />
+            </ReactModal> */}
+            {/* {toggleSignupModal && (
+                <SignupModal
+                    closeSignupModal={() => setToggleSignupModal(false)}
+                    openLoginModal={() => setloginModalToggle(true)}
+                />
+            )}
+            {toggleLoginModal && (
+                <LoginModal
+                    closeLoginModal={() => setloginModalToggle(false)}
+                />
+            )}
+            {showMobielNavSidebar && (
+                <MobielNavSidebar
+                    closeMobileNavSidebar={() => setShowMobielNavSidebar(false)}
+                    openLoginModal={() => setloginModalToggle(true)}
+                    openSignupModal={() => setToggleSignupModal(true)}
+                />
+            )} */}
         </div>
     );
 };
 
-export default WelcomePage;
+export default memo(LandingPage);

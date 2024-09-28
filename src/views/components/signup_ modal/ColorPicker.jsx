@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { SliderPicker } from "react-color";
 import "react-color-palette/css";
-import style from "./colorPicker.module.scss"; // Assuming you're using CSS Modules
+import style from "./ColorPicker.module.scss"; // Assuming you're using CSS Modules
 import CloseIcon from "../../../assets/svgs/signupModal/closeIcon";
-
+import { memo } from "react";
 const colors = [
     [
         "#EACEC5",
@@ -249,4 +249,4 @@ const ColorPicker = ({
     );
 };
 
-export default ColorPicker;
+export default memo(ColorPicker);

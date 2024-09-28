@@ -1,6 +1,7 @@
 import React from "react";
 import BackIcon from "../../../assets/svgs/mobileViewIcons/backIcon";
-import style from "./mobileNavSidebar.module.scss";
+import style from "./MobileNavSidebar.module.scss";
+import { memo } from "react";
 
 const MobileNavSidebar = ({
     openLoginModal,
@@ -49,4 +50,4 @@ const MobileNavSidebar = ({
     );
 };
 
-export default MobileNavSidebar;
+export default memo(MobileNavSidebar);
